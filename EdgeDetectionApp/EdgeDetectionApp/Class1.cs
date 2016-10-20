@@ -8,5 +8,9 @@ namespace EdgeDetectionApp
 {
     class Class1
     {
+        public void ConsoleWriter (){
+            Console.WriteLine("Hello there");
+            Console.ReadLine();
+            }
     }
 }
