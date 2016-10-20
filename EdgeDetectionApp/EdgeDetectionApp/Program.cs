@@ -15,7 +15,7 @@ namespace EdgeDetectionApp
         static void Main(string[] args)
         {
             //Class1 class1 = new Class1();
-            Class2 test = new Class2();
+            Detection1 test = new Detection1();
             test.Threshhold();
 
         }
