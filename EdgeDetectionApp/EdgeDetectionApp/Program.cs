@@ -17,6 +17,7 @@ namespace EdgeDetectionApp
             //Class1 class1 = new Class1();
             Detection1 test = new Detection1();
             test.Threshhold();
+            // you guys are shit
 
         }
     }
