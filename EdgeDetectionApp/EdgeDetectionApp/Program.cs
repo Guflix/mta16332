@@ -18,6 +18,7 @@ namespace EdgeDetectionApp
             Detection1 test = new Detection1();
             test.Threshhold();
             // you guys are shit
+            // you too
 
         }
     }
