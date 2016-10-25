@@ -14,13 +14,12 @@ namespace EdgeDetectionApp
     {
         public void Threshhold()
         {
+            //LoadImage
             string img_path = "C:\\Github\\P3\\box.jpg"; 			// OBS: use double slash
-
             Mat img = CvInvoke.Imread("C:\\Github\\P3\\box.jpg", LoadImageType.Color); 	// LoadImageType.Graysca
             CvInvoke.Imwrite(img_path, img);
-            CvInvoke.Imshow("Normal", img);
-            CvInvoke.WaitKey(0);
- 
+     
+            //Scaling
 
             //Blur
             //CvInvoke.MedianBlur(img, img_thresh, 10);
@@ -33,7 +32,10 @@ namespace EdgeDetectionApp
             CvInvoke.CvtColor(img, img_thresh, ColorConversion.Bgr2Gray);
             CvInvoke.Threshold(img_thresh, img_thresh, 100, 255, ThresholdType.Binary);
       
-            
+            //Blobs?
+      
+            //Showimages
+            CvInvoke.Imshow("Normal", img);
             CvInvoke.Imshow("Threshhold", img_thresh);
             CvInvoke.WaitKey(0);  
         }
