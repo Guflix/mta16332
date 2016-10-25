@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
+using Emgu.CV.UI;   
 
 namespace EdgeDetectionApp
 {
@@ -20,16 +20,20 @@ namespace EdgeDetectionApp
             CvInvoke.Imwrite(img_path, img);
             CvInvoke.Imshow("Normal", img);
             CvInvoke.WaitKey(0);
-  
+ 
+
+            //Blur
+            //CvInvoke.MedianBlur(img, img_thresh, 10);
+
+            //Edgedetection
+            //CvInvoke.Canny(img, img_thresh, 10, 20, 3);
+
             // Thresholding
             Mat img_thresh = new Mat();
-            //CvInvoke.CvtColor(img, img_thresh, ColorConversion.Bgr2Gray);
-
+            CvInvoke.CvtColor(img, img_thresh, ColorConversion.Bgr2Gray);
             CvInvoke.Threshold(img_thresh, img_thresh, 100, 255, ThresholdType.Binary);
-            //CvInvoke.MedianBlur(img, img_thresh, 10);
-            CvInvoke.Canny(img, img_thresh, 10, 20, 3);
-            //CvInvoke.Threshold(img_thresh, img_thresh, 100, 255, ThresholdType.Binary);
-
+      
+            
             CvInvoke.Imshow("Threshhold", img_thresh);
             CvInvoke.WaitKey(0);  
         }
