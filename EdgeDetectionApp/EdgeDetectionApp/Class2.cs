@@ -6,33 +6,53 @@ using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
+using Emgu.CV.UI;   
 
 namespace EdgeDetectionApp
 {
      class Detection1
     {
-        public void Threshhold()
-        {
-            string img_path = "C:\\Github\\P3\\box.jpg"; 			// OBS: use double slash
+         Mat img;
+         Image<Gray, Byte> imgMatrix;
+         Image<Gray, Byte> outputMatrix;
+        
+         public Detection1(string img_path)
+         {
+             img = CvInvoke.Imread("C:\\Github\\P3\\" + img_path, LoadImageType.Color);
+             imgMatrix = img.ToImage<Gray, Byte>();
+         }
 
-            Mat img = CvInvoke.Imread("C:\\Github\\P3\\box.jpg", LoadImageType.Color); 	// LoadImageType.Graysca
-            CvInvoke.Imwrite(img_path, img);
-            CvInvoke.Imshow("Normal", img);
-            CvInvoke.WaitKey(0);
-  
-            // Thresholding
-            Mat img_thresh = new Mat();
-            //CvInvoke.CvtColor(img, img_thresh, ColorConversion.Bgr2Gray);
+         public void scaling(double scalar)
+         {
+             int newWidth = (int)(imgMatrix.Cols * scalar);
+             int newHeight = (int)(imgMatrix.Rows * scalar);
+             outputMatrix = new Image<Gray, byte>(newWidth, newHeight);
+             
+             for (int y = 0; y < outputMatrix.Rows; y++)
+             {
+                 for (int x = 0; x < outputMatrix.Cols; x++)
+                 {
+                     int h = (int)(y / scalar);
+                     int w = (int)(x / scalar);
+                     outputMatrix.Data[y, x, 0] = imgMatrix.Data[h, w, 0];
+                 }
+             }
+         }
 
-            CvInvoke.Threshold(img_thresh, img_thresh, 100, 255, ThresholdType.Binary);
-            //CvInvoke.MedianBlur(img, img_thresh, 10);
-            CvInvoke.Canny(img, img_thresh, 10, 20, 3);
-            //CvInvoke.Threshold(img_thresh, img_thresh, 100, 255, ThresholdType.Binary);
+         public void noiseReduce(int ksize)
+         {
+             outputMatrix = outputMatrix.SmoothGaussian(ksize, ksize, 0, 0);
+         }
 
-            CvInvoke.Imshow("Threshhold", img_thresh);
-            CvInvoke.WaitKey(0);  
-        }
+         public void cannyEdgeDetection()
+         {
+             CvInvoke.Canny(outputMatrix, outputMatrix, 0, 170, 3);
+         }
+
+         public void displayImage(string windowCaption)
+         {
+             CvInvoke.Imshow(windowCaption, outputMatrix);
+         }
     }
 }
 

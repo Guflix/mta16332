@@ -14,10 +14,12 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            //Class1 class1 = new Class1();
-            Detection1 test = new Detection1();
-            test.Threshhold();
-
+            Detection1 test = new Detection1("box.jpg");
+            test.scaling(0.3);
+            test.noiseReduce(5);
+            test.cannyEdgeDetection();
+            test.displayImage("Helo");
+            CvInvoke.WaitKey();
         }
     }
 }
