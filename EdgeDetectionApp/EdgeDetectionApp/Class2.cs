@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;   
-
+using Emgu.CV.UI;
+using AForge;
+using AForge.Controls;
+using AForge.Imaging;
+using AForge.Imaging.Formats;
+using AForge.Imaging.IPPrototyper;
+using AForge.Imaging.Textures;
+using AForge.Imaging.ColorReduction;
+using AForge.Fuzzy;
+using AForge.Math.Geometry;
+using AForge.Math;
+using AForge.Math.Metrics;
 namespace EdgeDetectionApp
 {
      class Detection1
@@ -52,6 +63,48 @@ namespace EdgeDetectionApp
          public void displayImage(string windowCaption)
          {
              CvInvoke.Imshow(windowCaption, outputMatrix);
+             
+         }
+
+         public void blobDetect()
+         {
+             //outputMatrix.ToBitmap(outputMatrix.Rows,outputMatrix.Cols);
+             BlobCounter bc = new BlobCounter();
+             Bitmap image = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\box.jpg");
+             bc.ProcessImage(image);
+             Blob[] blobs = bc.GetObjectsInformation();
+             SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+             Graphics g = Graphics.FromImage(image);
+             Pen redPen = new Pen(Color.Red, 2);
+             // check each object and draw circle around objects, which
+             // are recognized as circles
+
+             for (int i = 0, n = blobs.Length; i < n; i++)
+             {
+                 List<IntPoint> edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
+
+                 System.Drawing.Point center;
+                 float radius;
+
+                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
+                 {
+                     g.DrawEllipse(redPen,
+                         (int)(center.X - radius),
+                         (int)(center.Y - radius),
+                         (int)(radius * 2),
+                         (int)(radius * 2));
+                 }
+             }
+
+             redPen.Dispose();
+             g.Dispose();
+
+         }
+
+         public void circleDetect()
+         {
+
          }
     }
 }
