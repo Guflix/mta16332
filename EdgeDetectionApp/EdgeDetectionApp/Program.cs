@@ -14,7 +14,7 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            Detection1 test = new Detection1("box.jpg");
+            Detection1 test = new Detection1("board.jpg");
             test.scaling(0.3);
             test.noiseReduce(5);
             test.cannyEdgeDetection();
