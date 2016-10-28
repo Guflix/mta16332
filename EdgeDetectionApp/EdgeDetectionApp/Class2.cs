@@ -84,7 +84,7 @@ namespace EdgeDetectionApp
              {
                  List<IntPoint> edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
 
-                 System.Drawing.Point center;
+                 AForge.Point center;
                  float radius;
 
                  if (shapeChecker.IsCircle(edgePoints, out center, out radius))
