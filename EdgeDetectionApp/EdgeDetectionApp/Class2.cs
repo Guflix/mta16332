@@ -143,15 +143,5 @@ namespace EdgeDetectionApp
              imgMatrix = new Image<Bgr, Byte>(image);
              CvInvoke.Imshow(windowCaption, imgMatrix);
          }
-
-         private System.Drawing.Point[] ToPointsArray(List<IntPoint> points)
-         {
-             System.Drawing.Point[] array = new System.Drawing.Point[points.Count];
-             for (int i = 0, n = points.Count; i < n; i++)
-             {
-                 array[i] = new System.Drawing.Point(points[i].X, points[i].Y);
-             }
-             return array;
-         }
      }
 }
