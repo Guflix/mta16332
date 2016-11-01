@@ -24,15 +24,11 @@ namespace EdgeDetectionApp
 {
      class Detection1
     {
-         //Mat img;
          Image<Gray, Byte> imgMatrix;
-         //Image<Gray, Byte> outputMatrix;
          Bitmap image;
         
          public Detection1(string img_path)
          {
-             //img = CvInvoke.Imread("C:\\Github\\P3\\" + img_path, LoadImageType.Color);
-             //imgMatrix = img.ToImage<Gray, Byte>();
              image = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg");
          }
 
