@@ -15,6 +15,7 @@ using AForge.Imaging.Formats;
 using AForge.Imaging.IPPrototyper;
 using AForge.Imaging.Textures;
 using AForge.Imaging.ColorReduction;
+using AForge.Imaging.Filters;
 using AForge.Fuzzy;
 using AForge.Math.Geometry;
 using AForge.Math;
@@ -23,89 +24,69 @@ namespace EdgeDetectionApp
 {
      class Detection1
     {
-         Mat img;
+         //Mat img;
          Image<Gray, Byte> imgMatrix;
-         Image<Gray, Byte> outputMatrix;
+         //Image<Gray, Byte> outputMatrix;
+         Bitmap image;
         
          public Detection1(string img_path)
          {
-             img = CvInvoke.Imread("C:\\Github\\P3\\" + img_path, LoadImageType.Color);
-             imgMatrix = img.ToImage<Gray, Byte>();
+             //img = CvInvoke.Imread("C:\\Github\\P3\\" + img_path, LoadImageType.Color);
+             //imgMatrix = img.ToImage<Gray, Byte>();
+             image = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg");
+         }
+
+         public void grayscale()
+         {
+             Grayscale filter = new Grayscale(0.2125, 0.7154, 0.0721);
+             image = filter.Apply(image);
          }
 
          public void scaling(double scalar)
          {
-             int newWidth = (int)(imgMatrix.Cols * scalar);
-             int newHeight = (int)(imgMatrix.Rows * scalar);
-             outputMatrix = new Image<Gray, byte>(newWidth, newHeight);
-             
-             for (int y = 0; y < outputMatrix.Rows; y++)
-             {
-                 for (int x = 0; x < outputMatrix.Cols; x++)
-                 {
-                     int h = (int)(y / scalar);
-                     int w = (int)(x / scalar);
-                     outputMatrix.Data[y, x, 0] = imgMatrix.Data[h, w, 0];
-                 }
-             }
+             int height = (int)(scalar * image.Height);
+             int width = (int)(scalar * image.Width);
+             ResizeBilinear filter = new ResizeBilinear(width, height);
+             image = filter.Apply(image);
          }
 
          public void noiseReduce(int ksize)
          {
-             outputMatrix = outputMatrix.SmoothGaussian(ksize, ksize, 0, 0);
+             GaussianBlur filter = new GaussianBlur(1, ksize);
+             image = filter.Apply(image);
          }
 
-         public void cannyEdgeDetection()
+         public void histogramEq()
          {
-             CvInvoke.Canny(outputMatrix, outputMatrix, 0, 170, 3);
+             HistogramEqualization filter = new HistogramEqualization();
+             filter.ApplyInPlace(image);
+         }
+
+         public void edgeDetection()
+         {
+             SobelEdgeDetector filter = new SobelEdgeDetector();
+             filter.ApplyInPlace(image);
+         }
+
+         public void thresholding()
+         {
+             OtsuThreshold filter = new OtsuThreshold();
+             filter.ApplyInPlace(image);
+         }
+
+         public void closing()
+         {
+             Dilatation filter = new Dilatation();
+             Erosion eFilter = new Erosion();
+             image = filter.Apply(image);
+             image = eFilter.Apply(image);
          }
 
          public void displayImage(string windowCaption)
          {
-             CvInvoke.Imshow(windowCaption, outputMatrix);
-             
+             imgMatrix = new Image<Gray, Byte>(image);
+             CvInvoke.Imshow(windowCaption, imgMatrix);
          }
-
-         public void blobDetect()
-         {
-             //outputMatrix.ToBitmap(outputMatrix.Rows,outputMatrix.Cols);
-             BlobCounter bc = new BlobCounter();
-             Bitmap image = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\box.jpg");
-             bc.ProcessImage(image);
-             Blob[] blobs = bc.GetObjectsInformation();
-             SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
-
-             Graphics g = Graphics.FromImage(image);
-             Pen redPen = new Pen(Color.Red, 2);
-             // check each object and draw circle around objects, which
-             // are recognized as circles
-
-             for (int i = 0, n = blobs.Length; i < n; i++)
-             {
-                 List<IntPoint> edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
-
-                 AForge.Point center;
-                 float radius;
-
-                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
-                 {
-                     g.DrawEllipse(redPen,
-                         (int)(center.X - radius),
-                         (int)(center.Y - radius),
-                         (int)(radius * 2),
-                         (int)(radius * 2));
-                 }
-             }
-
-             redPen.Dispose();
-             g.Dispose();
-
-         }
-
-         public void circleDetect()
-         {
-
-         }
-    }
+     }
 }
 
