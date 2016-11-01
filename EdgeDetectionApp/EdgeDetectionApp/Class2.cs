@@ -6,21 +6,11 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 using AForge;
-using AForge.Controls;
 using AForge.Imaging;
-using AForge.Imaging.Formats;
-using AForge.Imaging.IPPrototyper;
-using AForge.Imaging.Textures;
-using AForge.Imaging.ColorReduction;
 using AForge.Imaging.Filters;
-using AForge.Fuzzy;
 using AForge.Math.Geometry;
-using AForge.Math;
-using AForge.Math.Metrics;
 namespace EdgeDetectionApp
 {
      class Detection1
