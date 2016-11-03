@@ -14,10 +14,16 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            Detection1 test = new Detection1("board.jpg");
+            Detection1 test = new Detection1("box"); //EditForKate
             test.scaling(0.3);
-            test.noiseReduce(5);
-            test.cannyEdgeDetection();
+            test.grayscale();
+            test.noiseReduce(9);
+            test.edgeDetection();
+            test.thresholding();
+            test.closing();
+            test.extractShape();
+            test.blobDetection();
+            test.drawShape();
             test.displayImage("Helo");
             CvInvoke.WaitKey();
         }
