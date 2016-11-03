@@ -45,7 +45,7 @@ namespace EdgeDetectionApp
 
          public void grayscale()
          {
-             Grayscale filter = new Grayscale(0.2125, 0.7154, 0.0721);
+             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
              croppedImg = filter.Apply(croppedImg);
          }
 
@@ -57,7 +57,7 @@ namespace EdgeDetectionApp
 
         public void edgeDetection()
          {
-             SobelEdgeDetector filter = new SobelEdgeDetector();
+             CannyEdgeDetector filter = new CannyEdgeDetector();
              filter.ApplyInPlace(croppedImg);
          }
 
@@ -123,8 +123,7 @@ namespace EdgeDetectionApp
              for (int i = 0; i < blobs.Length; i++)
              {
                  edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
-
-
+                 
                  foreach (Blob blob in blobs)
                  {
                      List<IntPoint> leftP, rightP;
@@ -138,9 +137,28 @@ namespace EdgeDetectionApp
              }
          }
 
+         public void houghTransform()
+         {
+             HoughLineTransformation hlt = new HoughLineTransformation();
+             hlt.ProcessImage(croppedImg);
+             HoughLine[] lines = hlt.GetLinesByRelativeIntensity(0.5);
+             foreach (HoughLine line in lines)
+             {
+                 Console.WriteLine("line");
+             }
+
+             HoughCircleTransformation hct = new HoughCircleTransformation(432);
+             hct.ProcessImage(croppedImg);
+             HoughCircle[] circles = hct.GetCirclesByRelativeIntensity(0.5);
+             foreach (HoughCircle circle in circles)
+             {
+                 Console.WriteLine("circle");
+             }
+         }
+
          public void displayImage(string windowCaption)
          {
-             imgMatrix = new Image<Bgr, Byte>(image);
+             imgMatrix = new Image<Bgr, Byte>(croppedImg);
              CvInvoke.Imshow(windowCaption, imgMatrix);
          }
      }
