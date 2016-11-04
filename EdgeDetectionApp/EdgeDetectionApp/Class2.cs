@@ -15,9 +15,12 @@ namespace EdgeDetectionApp
 {
      class Detection1
     {
-         Image<Bgr, Byte> imgMatrix;
+         Image<Gray, Byte> imgMatrix;
          Bitmap image;
          Bitmap croppedImg;
+         Bitmap fuck;
+         int perimeter, area;
+         double c;
         
          public Detection1(string img_path)
          {
@@ -57,14 +60,14 @@ namespace EdgeDetectionApp
 
         public void edgeDetection()
          {
-             CannyEdgeDetector filter = new CannyEdgeDetector();
-             filter.ApplyInPlace(croppedImg);
+            CannyEdgeDetector filter = new CannyEdgeDetector();
+            filter.ApplyInPlace(croppedImg);
          }
 
          public void thresholding()
          {
              OtsuThreshold filter = new OtsuThreshold();
-             filter.ApplyInPlace(croppedImg);
+             croppedImg = filter.Apply(croppedImg);
          }
 
          public void closing()
@@ -81,34 +84,47 @@ namespace EdgeDetectionApp
              croppedImg = filter.Apply(croppedImg);
          }
 
-         public void blobDetection()
+         public void perimeterDetection()
          {
-             BlobCounter bc = new BlobCounter();
-             bc.ProcessImage(croppedImg);
-             Blob[] blobs = bc.GetObjectsInformation();
-             SimpleShapeChecker sc = new SimpleShapeChecker();
-             List<IntPoint> edgePoints;
-             for(int i = 0; i < blobs.Length; i++){
-                 edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
-                 AForge.Point center;
-                 float radius;
-                 List<IntPoint> corners;
-
-                 if (sc.IsCircle(edgePoints, out center, out radius))
-                 {                     
-                     Console.Write("circle");                    
-                 }
-                 else if (sc.IsQuadrilateral(edgePoints, out corners))
+             for (int i = 1; i < croppedImg.Width-1; i++)
+             {
+                 for (int j = 1; j < croppedImg.Height-1; j++)
                  {
-                     Console.Write("quadrilateral");
-                 }
-
-                 else if (sc.IsTriangle(edgePoints))
-                 {
-                     Console.Write("triangle");
+                     Color color = croppedImg.GetPixel(i, j);
+                     Color colr = croppedImg.GetPixel(i + 1, j);
+                     Color colr1 = croppedImg.GetPixel(i, j + 1);
+                     Color col = croppedImg.GetPixel(i - 1, j);
+                     Color col1 = croppedImg.GetPixel(i, j - 1);
+                     if (color.ToArgb() == Color.White.ToArgb()) { 
+                         if (colr.ToArgb() == Color.Black.ToArgb() || colr1.ToArgb() == Color.Black.ToArgb() || col.ToArgb() == Color.Black.ToArgb() || col1.ToArgb() == Color.Black.ToArgb())
+                            perimeter++;
+                     }
                  }
              }
-             
+             Console.WriteLine(perimeter);
+         }
+
+         public void areaDetection()
+         {
+             for (int i = 0; i < croppedImg.Width; i++)
+             {
+                 for (int j = 0; j < croppedImg.Height; j++)
+                 {
+                     Color color = croppedImg.GetPixel(i, j);
+                     if (color.ToArgb()==Color.White.ToArgb())
+                         area++;
+                 }
+             }
+             Console.WriteLine(area);
+         }
+
+         public void circularity()
+         {
+             c = perimeter/(2*Math.Sqrt(Math.PI*area));
+             if (c > 0.97)
+                 Console.WriteLine("circle " + c);
+             else
+                 Console.WriteLine(c);
          }
 
          public void drawShape()
@@ -117,8 +133,8 @@ namespace EdgeDetectionApp
              List<IntPoint> edgePoints;
              bc.ProcessImage(croppedImg);
              Blob[] blobs = bc.GetObjectsInformation();
-             
-             BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
+
+             BitmapData data = croppedImg.LockBits(new Rectangle(0, 0, croppedImg.Width, croppedImg.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
              GrahamConvexHull hullFinder = new GrahamConvexHull();
              for (int i = 0; i < blobs.Length; i++)
              {
@@ -131,34 +147,16 @@ namespace EdgeDetectionApp
                      edgePoints.AddRange(leftP);
                      edgePoints.AddRange(rightP);
                      List<IntPoint> hull = hullFinder.FindHull(edgePoints);
-                     Drawing.Polygon(data, edgePoints, Color.Red);
+                     Drawing.Polygon(data, edgePoints, Color.White);
+                     Console.WriteLine("holla " + blob.Area);
                  }
-                 image.UnlockBits(data);
-             }
-         }
-
-         public void houghTransform()
-         {
-             HoughLineTransformation hlt = new HoughLineTransformation();
-             hlt.ProcessImage(croppedImg);
-             HoughLine[] lines = hlt.GetLinesByRelativeIntensity(0.5);
-             foreach (HoughLine line in lines)
-             {
-                 Console.WriteLine("line");
-             }
-
-             HoughCircleTransformation hct = new HoughCircleTransformation(432);
-             hct.ProcessImage(croppedImg);
-             HoughCircle[] circles = hct.GetCirclesByRelativeIntensity(0.5);
-             foreach (HoughCircle circle in circles)
-             {
-                 Console.WriteLine("circle");
+                 croppedImg.UnlockBits(data);
              }
          }
 
          public void displayImage(string windowCaption)
          {
-             imgMatrix = new Image<Bgr, Byte>(croppedImg);
+             imgMatrix = new Image<Gray, Byte>(croppedImg);
              CvInvoke.Imshow(windowCaption, imgMatrix);
          }
      }
