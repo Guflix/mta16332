@@ -18,9 +18,9 @@ namespace EdgeDetectionApp
          Image<Gray, Byte> imgMatrix;
          Bitmap image;
          Bitmap croppedImg;
-         Bitmap fuck;
-         int perimeter, area;
-         double c;
+         double perimeter, area;
+         bool circle, rect, square, triangle;
+         AForge.IntPoint blob;
         
          public Detection1(string img_path)
          {
@@ -33,7 +33,10 @@ namespace EdgeDetectionApp
              int width = (int)(scalar * image.Width);
              ResizeBilinear filter = new ResizeBilinear(width, height);
              image = filter.Apply(image);
+         }
 
+         public void crop()
+         {
              if (image.Width < image.Height)
              {
                  Crop filtr = new Crop(new Rectangle(0, image.Height / 6, image.Width, image.Height / 2));
@@ -44,6 +47,7 @@ namespace EdgeDetectionApp
                  Crop filtr = new Crop(new Rectangle(image.Width / 6, 0, image.Width / 2, image.Height));
                  croppedImg = filtr.Apply(image);
              }
+             //croppedImg = image;
          }
 
          public void grayscale()
@@ -58,10 +62,10 @@ namespace EdgeDetectionApp
              croppedImg = filter.Apply(croppedImg);
          }
 
-        public void edgeDetection()
+         public void hedgeDetection()
          {
-            CannyEdgeDetector filter = new CannyEdgeDetector();
-            filter.ApplyInPlace(croppedImg);
+             CannyEdgeDetector filter = new CannyEdgeDetector();
+             filter.ApplyInPlace(croppedImg);
          }
 
          public void thresholding()
@@ -82,26 +86,36 @@ namespace EdgeDetectionApp
          {
              ExtractBiggestBlob filter = new ExtractBiggestBlob();
              croppedImg = filter.Apply(croppedImg);
+             blob = filter.BlobPosition;
+         }
+
+         public void spoopy()
+         {
+             SimpleSkeletonization filter = new SimpleSkeletonization();
+             filter.ApplyInPlace(croppedImg);
          }
 
          public void perimeterDetection()
          {
-             for (int i = 1; i < croppedImg.Width-1; i++)
+             for (int i = 0; i < croppedImg.Width; i++)
              {
-                 for (int j = 1; j < croppedImg.Height-1; j++)
+                 for (int j = 0; j < croppedImg.Height; j++)
                  {
                      Color color = croppedImg.GetPixel(i, j);
-                     Color colr = croppedImg.GetPixel(i + 1, j);
-                     Color colr1 = croppedImg.GetPixel(i, j + 1);
-                     Color col = croppedImg.GetPixel(i - 1, j);
-                     Color col1 = croppedImg.GetPixel(i, j - 1);
                      if (color.ToArgb() == Color.White.ToArgb()) { 
-                         if (colr.ToArgb() == Color.Black.ToArgb() || colr1.ToArgb() == Color.Black.ToArgb() || col.ToArgb() == Color.Black.ToArgb() || col1.ToArgb() == Color.Black.ToArgb())
                             perimeter++;
                      }
                  }
              }
              Console.WriteLine(perimeter);
+         }
+
+         public void drawShape()
+         {
+             PointedColorFloodFill filter = new PointedColorFloodFill();
+             filter.FillColor = Color.White;
+             filter.StartingPoint = new IntPoint(croppedImg.Width / 2, croppedImg.Width / 2);
+             filter.ApplyInPlace(croppedImg);
          }
 
          public void areaDetection()
@@ -120,44 +134,54 @@ namespace EdgeDetectionApp
 
          public void circularity()
          {
-             c = perimeter/(2*Math.Sqrt(Math.PI*area));
-             if (c > 0.97)
+             double c = (4*Math.PI*area)/Math.Pow(perimeter,2);
+             if (c > 0.95){
                  Console.WriteLine("circle " + c);
-             else
-                 Console.WriteLine(c);
-         }
-
-         public void drawShape()
-         {
-             BlobCounter bc = new BlobCounter();
-             List<IntPoint> edgePoints;
-             bc.ProcessImage(croppedImg);
-             Blob[] blobs = bc.GetObjectsInformation();
-
-             BitmapData data = croppedImg.LockBits(new Rectangle(0, 0, croppedImg.Width, croppedImg.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
-             GrahamConvexHull hullFinder = new GrahamConvexHull();
-             for (int i = 0; i < blobs.Length; i++)
-             {
-                 edgePoints = bc.GetBlobsEdgePoints(blobs[i]);
-                 
-                 foreach (Blob blob in blobs)
-                 {
-                     List<IntPoint> leftP, rightP;
-                     bc.GetBlobsLeftAndRightEdges(blob, out leftP, out rightP);
-                     edgePoints.AddRange(leftP);
-                     edgePoints.AddRange(rightP);
-                     List<IntPoint> hull = hullFinder.FindHull(edgePoints);
-                     Drawing.Polygon(data, edgePoints, Color.White);
-                     Console.WriteLine("holla " + blob.Area);
-                 }
-                 croppedImg.UnlockBits(data);
+                 circle = true;
              }
+             else
+             {
+                 Console.WriteLine("nope " + c);
+                 shape();
+             }
+                 
          }
 
-         public void displayImage(string windowCaption)
+         public void shape()
          {
+             double bbArea = croppedImg.Height * croppedImg.Width;
+             if (area / bbArea < 0.55)
+             {
+                 triangle = true;
+             }
+
+             double bbRatio;
+             if (croppedImg.Width > croppedImg.Height)
+                 bbRatio = croppedImg.Height / croppedImg.Width;
+             else
+                 bbRatio = croppedImg.Width / croppedImg.Height;
+
+             if (bbRatio > 0.95 && triangle == false)
+                 square = true;
+             else
+                 rect = true;
+         }
+
+         public void displayImage()
+         {
+             string shape;
+             if (circle)
+                 shape = "circle";
+             else if (triangle)
+                 shape = "triangle";
+             else if (square)
+                 shape = "square";
+             else if (rect)
+                 shape = "rectangle";
+             else
+                 shape = "idek man";
              imgMatrix = new Image<Gray, Byte>(croppedImg);
-             CvInvoke.Imshow(windowCaption, imgMatrix);
+             CvInvoke.Imshow(shape, imgMatrix);
          }
      }
 }
