@@ -21,6 +21,7 @@ namespace EdgeDetectionApp
         bool circle, rect, square, triangle;
         Color white = Color.White;
         Color black = Color.Black;
+        public int shape;
 
         public Shapecheck(Bitmap img)
         {
@@ -46,25 +47,28 @@ namespace EdgeDetectionApp
                         perimeter++;
                 }
             }
+            Console.WriteLine(perimeter);
         }
 
         public void drawShape()
         {
-            /*int pixels = 0;
+            int pixels = 0;
             bool[,] check = new bool[img.Width, img.Height];
             for (int x = 0; x < img.Width; x++)
             {
                 for (int y = 0; y < img.Height; y++)
                 {
                     Color color = img.GetPixel(x, y);
-                    while (compareColor(color, black) == true && check[x, y] == false)
+                    while (compareColor(color, white) == true && check[x, y] == false)
                     {
                         pixels++;
+                        check[x, y] = true;
                     }
                 }
             }
-            int a = img.Width * img.Height - pixels;
-            Console.WriteLine(a);*/
+            int a = (img.Width * img.Height) - pixels;
+            Console.WriteLine(img.Width * img.Height);
+            Console.WriteLine("pixels: " + a);
 
             PointedColorFloodFill filter = new PointedColorFloodFill();
             filter.FillColor = Color.White;
@@ -92,10 +96,10 @@ namespace EdgeDetectionApp
             if (c > 0.95)
                 circle = true;
             else
-                shape();
+                triangleOrSquare();
         }
 
-        public void shape()
+        public void triangleOrSquare()
         {
             double bbArea = img.Height * img.Width;
             if (area / bbArea < 0.55)
@@ -113,22 +117,23 @@ namespace EdgeDetectionApp
                 rect = true;
         }
 
-        public string whichShape()
+        public int whichShape()
         {
             perimeterDetection();
             drawShape();
             areaDetection();
             circularity();
             if (circle)
-                return "circle";
+                shape = 1;
             else if (triangle)
-                return "triangle";
+                shape = 2;
             else if (square)
-                return "square";
+                shape = 3;
             else if (rect)
-                return "rect";
+                shape = 4;
             else
-                return "what the fuck";
+                shape = 5;
+            return shape;
         }
     }
 }

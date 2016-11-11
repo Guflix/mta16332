@@ -14,10 +14,11 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            Image test = new Image("smoke");
-            test.preprocess(0.3, 11);
+            Image test = new Image("board");
+            test.preprocess(0.55, 11);
             test.blobDetect();
             test.shapeDetect();
+            test.draw();
             test.displayImage();
             CvInvoke.WaitKey();
         }
