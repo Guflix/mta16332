@@ -14,20 +14,10 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            Detection1 test = new Detection1("box");
-            test.scaling(0.6);
-            test.crop();
-            test.grayscale();
-            test.noiseReduce(11);
-            test.thresholding();
-            test.hedgeDetection();
-            test.extractShape();
-            test.thresholding();
-            test.spoopy();
-            test.perimeterDetection();
-            test.drawShape();
-            test.areaDetection();
-            test.circularity();
+            Image test = new Image("smoke");
+            test.preprocess(0.3, 11);
+            test.blobDetect();
+            test.shapeDetect();
             test.displayImage();
             CvInvoke.WaitKey();
         }
