@@ -47,29 +47,10 @@ namespace EdgeDetectionApp
                         perimeter++;
                 }
             }
-            Console.WriteLine(perimeter);
         }
 
         public void drawShape()
         {
-            int pixels = 0;
-            bool[,] check = new bool[img.Width, img.Height];
-            for (int x = 0; x < img.Width; x++)
-            {
-                for (int y = 0; y < img.Height; y++)
-                {
-                    Color color = img.GetPixel(x, y);
-                    while (compareColor(color, white) == true && check[x, y] == false)
-                    {
-                        pixels++;
-                        check[x, y] = true;
-                    }
-                }
-            }
-            int a = (img.Width * img.Height) - pixels;
-            Console.WriteLine(img.Width * img.Height);
-            Console.WriteLine("pixels: " + a);
-
             PointedColorFloodFill filter = new PointedColorFloodFill();
             filter.FillColor = Color.White;
             filter.StartingPoint = new IntPoint(img.Width / 2, img.Width / 2);
@@ -87,7 +68,6 @@ namespace EdgeDetectionApp
                         area++;
                 }
             }
-            Console.WriteLine(area);
         }
 
         public void circularity()

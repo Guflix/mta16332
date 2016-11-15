@@ -14,8 +14,8 @@ namespace EdgeDetectionApp
     {
         static void Main(string[] args)
         {
-            Image test = new Image("board");
-            test.preprocess(0.55, 11);
+            Image test = new Image("box");
+            test.preprocess(0.6, 11);
             test.blobDetect();
             test.shapeDetect();
             test.draw();

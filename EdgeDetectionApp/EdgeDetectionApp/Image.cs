@@ -59,13 +59,12 @@ namespace EdgeDetectionApp
                 Crop filter = new Crop(new Rectangle(orgImg.Width / 6, 0, orgImg.Width / 2, orgImg.Height));
                 orgImg = filter.Apply(orgImg);
             }
-            croppedImg = orgImg;
         }
 
         public void grayscale()
         {
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
-            croppedImg = filter.Apply(croppedImg);
+            croppedImg = filter.Apply(orgImg);
         }
 
         public void noiseReduce(int ksize)
@@ -107,12 +106,12 @@ namespace EdgeDetectionApp
         public void blobDetect()
         {
             bd = new BlobDetector(croppedImg);
-            shapeImg = bd.biggestShape();
+            shapeImg = bd.blobDetection();
         }
 
         public void shapeDetect()
         {
-            Shapecheck sc = new Shapecheck(shapeImg);
+            sc = new Shapecheck(shapeImg);
             shape = sc.whichShape();
         }
 
@@ -126,27 +125,32 @@ namespace EdgeDetectionApp
                     Color color = shapeImg.GetPixel(x, y);
                     if (color.ToArgb() == Color.Black.ToArgb())
                         shapeImg.SetPixel(x, y, Color.Transparent);
-                    else if (color.ToArgb() != Color.Black.ToArgb() && shape == 1)
-                        shapeImg.SetPixel(x, y, Color.Red);
-                    else if (color.ToArgb() != Color.Black.ToArgb() && shape == 2)
-                        shapeImg.SetPixel(x, y, Color.Yellow);
-                    else if (color.ToArgb() != Color.Black.ToArgb() && shape == 3)
-                        shapeImg.SetPixel(x, y, Color.Blue);
-                    else
-                        shapeImg.SetPixel(x, y, Color.Purple);
+                    else if (color.ToArgb() != Color.Black.ToArgb()){
+                        if(shape == 1)
+                            shapeImg.SetPixel(x, y, Color.Red);
+                        else if (shape == 2)
+                            shapeImg.SetPixel(x, y, Color.Yellow);
+                        else if (shape == 3)
+                            shapeImg.SetPixel(x, y, Color.Blue);
+                        else
+                            shapeImg.SetPixel(x, y, Color.Purple);
+                    }                        
                 }
             }
-            int posX = bd.blobCoor.X;
-            int posY = bd.blobCoor.Y;
+            int length = bd.biggestBlob.Count;
+            int posX = bd.biggestBlob[0].X;
+            int posY = bd.biggestBlob[0].Y;
 
             using (Graphics g = Graphics.FromImage(orgImg))
             {
-                g.DrawImage(shapeImg, posX, posY);
+                g.DrawImage(shapeImg, 0, 0);
             }
         }
 
         public void displayImage()
         {
+            Console.WriteLine("orgImg: " + orgImg.Width + " " + orgImg.Height);
+            Console.WriteLine("shapeImg: " + shapeImg.Width + " " + shapeImg.Height);
             imgMatrix = new Image<Bgr, Byte>(orgImg);
             CvInvoke.Imshow("case!", imgMatrix);
         }
