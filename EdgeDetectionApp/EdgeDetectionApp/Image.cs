@@ -94,7 +94,7 @@ namespace EdgeDetectionApp
         public void preprocess(double scalar, int ksize) //it just calls all the functions for preprocesing
         {
             scaling(scalar);
-            crop();
+            //crop();
             grayscale();
             noiseReduce(ksize);
             thresholding();
@@ -113,6 +113,11 @@ namespace EdgeDetectionApp
         {
             bd.BBsize();
             sc = new Shapecheck(shapeImg);
+            sc.perimeterDetection();
+            sc.drawShape();
+            sc.areaDetection();
+            sc.circularity();
+            sc.triangleOrSquare(bd.BBheight, bd.BBwidth);
             shape = sc.whichShape();
         }
 

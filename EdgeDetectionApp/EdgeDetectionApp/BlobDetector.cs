@@ -122,6 +122,7 @@ namespace EdgeDetectionApp
             }
             return smallest_y;
         }
+
         public int BiggestX(List<System.Drawing.Point> blob)
         {
             int biggest_x = 0;
@@ -134,6 +135,7 @@ namespace EdgeDetectionApp
             }
             return biggest_x;
         }
+
         public int BiggestY(List<System.Drawing.Point> blob)
         {
             int biggest_y = 0;
@@ -146,6 +148,7 @@ namespace EdgeDetectionApp
             }
             return biggest_y;
         }
+
         public void BBsize()
         {
             BBwidth = BiggestX(biggestBlob) - SmallestX(biggestBlob);

@@ -75,34 +75,35 @@ namespace EdgeDetectionApp
             double c = (4 * Math.PI * area) / Math.Pow(perimeter, 2);
             if (c > 0.95)
                 circle = true;
-            else
-                triangleOrSquare();
         }
 
         public void triangleOrSquare(int BBheight, int BBwidth)
         {
-            double bbArea = BBheight * BBwidth; //bbArea - bounding box area, now doesn't work
-            if (area / bbArea < 0.55)
-                triangle = true;
+            if (circle == false)
+            {
+                double bbArea = BBheight * BBwidth; //bbArea - bounding box area, now doesn't work
+                if (area / bbArea < 0.55)
+                    triangle = true;
 
-            double bbRatio;
-            if (BBwidth > BBheight)
-                bbRatio = BBheight / BBwidth;
-            else
-                bbRatio = BBwidth / BBheight;
+                double bbRatio;
+                if (BBwidth > BBheight)
+                    bbRatio = BBheight / BBwidth;
+                else
+                    bbRatio = BBwidth / BBheight;
 
-            if (bbRatio > 0.95 && triangle == false)
-                square = true;
-            else
-                rect = true;
+                if (bbRatio > 0.95 && triangle == false)
+                    square = true;
+                else
+                    rect = true;
+            }
         }
 
         public int whichShape()
         {
-            perimeterDetection();
-            drawShape();
-            areaDetection();
-            circularity();
+            //perimeterDetection();
+            //drawShape();
+            //areaDetection();
+            //circularity();
             if (circle)
                 shape = 1;
             else if (triangle)
