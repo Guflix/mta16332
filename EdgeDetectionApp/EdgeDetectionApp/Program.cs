@@ -17,8 +17,8 @@ namespace EdgeDetectionApp
             Image test = new Image("box");
             test.preprocess(0.6, 11);
             test.blobDetect();
-            test.shapeDetect();
-            test.draw();
+            //test.shapeDetect();
+            //test.draw();
             test.displayImage();
             CvInvoke.WaitKey();
         }

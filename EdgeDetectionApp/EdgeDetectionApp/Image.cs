@@ -151,7 +151,7 @@ namespace EdgeDetectionApp
         {
             Console.WriteLine("orgImg: " + orgImg.Width + " " + orgImg.Height);
             Console.WriteLine("shapeImg: " + shapeImg.Width + " " + shapeImg.Height);
-            imgMatrix = new Image<Bgr, Byte>(orgImg);
+            imgMatrix = new Image<Bgr, Byte>(shapeImg);
             CvInvoke.Imshow("case!", imgMatrix);
         }
     }

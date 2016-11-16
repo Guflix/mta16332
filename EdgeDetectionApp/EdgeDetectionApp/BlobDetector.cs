@@ -49,7 +49,6 @@ namespace EdgeDetectionApp
                         Queue<System.Drawing.Point> q = new Queue<System.Drawing.Point>();
                         q.Enqueue(new System.Drawing.Point(x, y));
 
-                        int pixels = 0;
                         List<System.Drawing.Point> blob = new List<System.Drawing.Point>();
                         while (q.Count > 0)
                         {
@@ -60,7 +59,6 @@ namespace EdgeDetectionApp
                                 if (!burned[p.X, p.Y] && !compareColors(col, black))
                                 {
                                     burned[p.X, p.Y] = true;
-                                    pixels++;
                                     blob.Add(p);
 
                                     q.Enqueue(new System.Drawing.Point(p.X + 1, p.Y));
