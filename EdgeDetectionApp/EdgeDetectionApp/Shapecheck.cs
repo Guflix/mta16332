@@ -17,7 +17,7 @@ namespace EdgeDetectionApp
     class Shapecheck
     {
         Bitmap img;
-        double perimeter, area;
+        double perimeter, area; //obvod
         bool circle, rect, square, triangle;
         Color white = Color.White;
         Color black = Color.Black;
@@ -36,7 +36,7 @@ namespace EdgeDetectionApp
                 return false;
         }
 
-        public void perimeterDetection()
+        public void perimeterDetection() //checks every white pixel and adds it to the perimeter
         {
             for (int i = 0; i < img.Width; i++)
             {
@@ -49,7 +49,7 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void drawShape()
+        public void drawShape() //bucket tool, fills it with paint, AForge, stops when it hits the edges
         {
             PointedColorFloodFill filter = new PointedColorFloodFill();
             filter.FillColor = Color.White;
@@ -57,7 +57,7 @@ namespace EdgeDetectionApp
             filter.ApplyInPlace(img);
         }
 
-        public void areaDetection()
+        public void areaDetection() //we add all of the white pixel to the area variable, now that it has been filled with colour
         {
             for (int i = 0; i < img.Width; i++)
             {
@@ -70,7 +70,7 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void circularity()
+        public void circularity() //checks if it is cicular or not (function on the internet)
         {
             double c = (4 * Math.PI * area) / Math.Pow(perimeter, 2);
             if (c > 0.95)
@@ -81,7 +81,7 @@ namespace EdgeDetectionApp
 
         public void triangleOrSquare()
         {
-            double bbArea = img.Height * img.Width;
+            double bbArea = img.Height * img.Width; //bbArea - bounding box area, now doesn't work
             if (area / bbArea < 0.55)
                 triangle = true;
 

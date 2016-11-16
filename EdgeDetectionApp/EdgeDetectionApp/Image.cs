@@ -26,12 +26,12 @@ namespace EdgeDetectionApp
 
         public Image(string img_path)
         {
-            orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg");
+            orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg"); //original image
         }
        
         public Bitmap convert(Bitmap img)
         {
-            convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb);
+            convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb); //converts the image to bitmap - draws pixels on a blank bitmap
             using (Graphics g = Graphics.FromImage(convertedImg))
             {
                 g.DrawImage(img, 0, 0);
@@ -43,11 +43,11 @@ namespace EdgeDetectionApp
         {
             int height = (int)(scalar * orgImg.Height);
             int width = (int)(scalar * orgImg.Width);
-            ResizeBilinear filter = new ResizeBilinear(width, height);
+            ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
             orgImg = filter.Apply(orgImg);
         }
         
-        public void crop()
+        public void crop() //crops the edge parts either on the right or left side (wide picture) or upper and downer side (tall picture)
         {
             if (orgImg.Width < orgImg.Height)
             {
@@ -61,37 +61,37 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void grayscale()
+        public void grayscale() //convers the image to grayscale, just a filter again
         {
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
             croppedImg = filter.Apply(orgImg);
         }
 
-        public void noiseReduce(int ksize)
+        public void noiseReduce(int ksize) //filter, ksize - kernel for the gaussian filter,  
         {
             GaussianBlur filter = new GaussianBlur(1, ksize);
             croppedImg = filter.Apply(croppedImg);
         }
 
-        public void hedgeDetection()
+        public void hedgeDetection() //canny edge detection filter
         {
             CannyEdgeDetector filter = new CannyEdgeDetector();
             filter.ApplyInPlace(croppedImg);
         }
 
-        public void thresholding()
+        public void thresholding() //finds threshold on its own
         {
             OtsuThreshold filter = new OtsuThreshold();
             croppedImg = filter.Apply(croppedImg);
         }
 
-        public void spoopy()
+        public void spoopy() // makes the edges of the picture only 1 pixel wide
         {
             SimpleSkeletonization filter = new SimpleSkeletonization();
             filter.ApplyInPlace(croppedImg);
         }
 
-        public void preprocess(double scalar, int ksize)
+        public void preprocess(double scalar, int ksize) //it just calls all the functions for preprocesing
         {
             scaling(scalar);
             crop();
@@ -115,7 +115,7 @@ namespace EdgeDetectionApp
             shape = sc.whichShape();
         }
 
-        public void draw()
+        public void draw() //drawing colours depending on shapes
         {
             shapeImg = convert(shapeImg);
             for (int x = 0; x < shapeImg.Width; x++)
@@ -145,7 +145,7 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void displayImage()
+        public void displayImage() //displaying the image using the OPENCV stuff
         {
             Console.WriteLine("orgImg: " + orgImg.Width + " " + orgImg.Height);
             Console.WriteLine("shapeImg: " + shapeImg.Width + " " + shapeImg.Height);
