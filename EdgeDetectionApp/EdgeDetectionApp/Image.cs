@@ -138,8 +138,6 @@ namespace EdgeDetectionApp
                 }
             }
             int length = bd.biggestBlob.Count;
-            int posX = bd.biggestBlob[0].X;
-            int posY = bd.biggestBlob[0].Y;
 
             using (Graphics g = Graphics.FromImage(orgImg))
             {
@@ -151,7 +149,7 @@ namespace EdgeDetectionApp
         {
             Console.WriteLine("orgImg: " + orgImg.Width + " " + orgImg.Height);
             Console.WriteLine("shapeImg: " + shapeImg.Width + " " + shapeImg.Height);
-            imgMatrix = new Image<Bgr, Byte>(shapeImg);
+            imgMatrix = new Image<Bgr, Byte>(orgImg);
             CvInvoke.Imshow("case!", imgMatrix);
         }
     }
