@@ -79,17 +79,17 @@ namespace EdgeDetectionApp
                 triangleOrSquare();
         }
 
-        public void triangleOrSquare()
+        public void triangleOrSquare(int BBheight, int BBwidth)
         {
-            double bbArea = img.Height * img.Width; //bbArea - bounding box area, now doesn't work
+            double bbArea = BBheight * BBwidth; //bbArea - bounding box area, now doesn't work
             if (area / bbArea < 0.55)
                 triangle = true;
 
             double bbRatio;
-            if (img.Width > img.Height)
-                bbRatio = img.Height / img.Width;
+            if (BBwidth > BBheight)
+                bbRatio = BBheight / BBwidth;
             else
-                bbRatio = img.Width / img.Height;
+                bbRatio = BBwidth / BBheight;
 
             if (bbRatio > 0.95 && triangle == false)
                 square = true;

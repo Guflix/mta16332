@@ -21,6 +21,7 @@ namespace EdgeDetectionApp
         Color black = Color.Black;
         List<List<System.Drawing.Point>> blobs;
         public List<System.Drawing.Point> biggestBlob;
+        public int BBwidth, BBheight;
 
         public BlobDetector(Bitmap img)
         {
@@ -97,5 +98,59 @@ namespace EdgeDetectionApp
             }
             return biggestBlob;
         }
+        public int SmallestX(List<System.Drawing.Point> blob)
+        {
+            int smallest_x = img.Width;
+            foreach (System.Drawing.Point p in blob)
+            {
+                if (p.X < smallest_x)
+                {
+                    smallest_x = p.X;
+                }
+            }
+            return smallest_x;
+        }
+        public int SmallestY(List<System.Drawing.Point> blob)
+        {
+            int smallest_y = img.Height;
+            foreach (System.Drawing.Point p in blob)
+            {
+                if (p.Y < smallest_y)
+                {
+                    smallest_y = p.Y;
+                }
+            }
+            return smallest_y;
+        }
+        public int BiggestX(List<System.Drawing.Point> blob)
+        {
+            int biggest_x = 0;
+            foreach (System.Drawing.Point p in blob)
+            {
+                if (p.X > biggest_x)
+                {
+                    biggest_x = p.X;
+                }
+            }
+            return biggest_x;
+        }
+        public int BiggestY(List<System.Drawing.Point> blob)
+        {
+            int biggest_y = 0;
+            foreach (System.Drawing.Point p in blob)
+            {
+                if (p.Y > biggest_y)
+                {
+                    biggest_y = p.Y;
+                }
+            }
+            return biggest_y;
+        }
+        public void BBsize()
+        {
+            BBwidth = BiggestX(biggestBlob) - SmallestX(biggestBlob);
+            BBheight = BiggestY(biggestBlob) - SmallestY(biggestBlob);
+        }
+
     }
 }

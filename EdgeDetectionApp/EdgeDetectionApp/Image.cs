@@ -111,6 +111,7 @@ namespace EdgeDetectionApp
 
         public void shapeDetect()
         {
+            bd.BBsize();
             sc = new Shapecheck(shapeImg);
             shape = sc.whichShape();
         }
