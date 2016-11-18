@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Emgu.CV;
@@ -10,7 +6,7 @@ using Emgu.CV.Structure;
 using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
-using AForge.Math.Geometry;
+
 namespace EdgeDetectionApp
 {
     class Image
@@ -20,7 +16,6 @@ namespace EdgeDetectionApp
         Bitmap convertedImg;
         Bitmap croppedImg;
         Bitmap shapeImg;
-        int shape;
         BlobDetector bd;
         Shapecheck sc;
 
@@ -28,10 +23,10 @@ namespace EdgeDetectionApp
         {
             orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg"); //original image
         }
-       
-        public Bitmap convert(Bitmap img)
+
+        private Bitmap convert(Bitmap img)
         {
-            convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb); //converts the image to bitmap - draws pixels on a blank bitmap
+            convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb); //converts the image to bitmap in specific pixelformat - draws pixels on a blank bitmap
             using (Graphics g = Graphics.FromImage(convertedImg))
             {
                 g.DrawImage(img, 0, 0);
@@ -39,15 +34,15 @@ namespace EdgeDetectionApp
             return convertedImg;
         }
 
-        public void scaling(double scalar)
+        private void scaling(double scalar)
         {
             int height = (int)(scalar * orgImg.Height);
             int width = (int)(scalar * orgImg.Width);
             ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
             orgImg = filter.Apply(orgImg);
         }
-        
-        public void crop() //crops the edge parts either on the right or left side (wide picture) or upper and downer side (tall picture)
+
+        private void crop() //crops the edge parts either on the right or left side (wide picture) or upper and downer side (tall picture)
         {
             if (orgImg.Width < orgImg.Height)
             {
@@ -61,31 +56,31 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void grayscale() //convers the image to grayscale, just a filter again
+        private void grayscale() //convers the image to grayscale, just a filter again
         {
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
             croppedImg = filter.Apply(orgImg);
         }
 
-        public void noiseReduce(int ksize) //filter, ksize - kernel for the gaussian filter,  
+        private void noiseReduce(int ksize) //filter, ksize - kernel for the gaussian filter,  
         {
             GaussianBlur filter = new GaussianBlur(1, ksize);
             croppedImg = filter.Apply(croppedImg);
         }
 
-        public void hedgeDetection() //canny edge detection filter
+        private void edgeDetection() //sobel edge detection filter
         {
-            CannyEdgeDetector filter = new CannyEdgeDetector();
+            SobelEdgeDetector filter = new SobelEdgeDetector();
             filter.ApplyInPlace(croppedImg);
         }
 
-        public void thresholding() //finds threshold on its own
+        private void thresholding() //finds threshold on its own
         {
             OtsuThreshold filter = new OtsuThreshold();
             croppedImg = filter.Apply(croppedImg);
         }
 
-        public void spoopy() // makes the edges of the picture only 1 pixel wide
+        private void skeletonize() // makes the edges of the picture only 1 pixel wide
         {
             SimpleSkeletonization filter = new SimpleSkeletonization();
             filter.ApplyInPlace(croppedImg);
@@ -98,9 +93,9 @@ namespace EdgeDetectionApp
             grayscale();
             noiseReduce(ksize);
             thresholding();
-            hedgeDetection();
+            edgeDetection();
             thresholding();
-            spoopy();
+            skeletonize();
         }
 
         public void blobDetect()
@@ -113,12 +108,7 @@ namespace EdgeDetectionApp
         {
             bd.BBsize();
             sc = new Shapecheck(shapeImg);
-            sc.perimeterDetection();
-            sc.drawShape();
-            sc.areaDetection();
-            sc.circularity();
-            sc.triangleOrSquare(bd.BBheight, bd.BBwidth);
-            shape = sc.whichShape();
+            sc.whichShape(bd.BBheight, bd.BBwidth);
         }
 
         public void draw() //drawing colours depending on shapes
@@ -132,31 +122,30 @@ namespace EdgeDetectionApp
                     if (color.ToArgb() == Color.Black.ToArgb())
                         shapeImg.SetPixel(x, y, Color.Transparent);
                     else if (color.ToArgb() != Color.Black.ToArgb()){
-                        if(shape == 1)
+                        if(sc.circle)
                             shapeImg.SetPixel(x, y, Color.Red);
-                        else if (shape == 2)
+                        else if (sc.triangle)
                             shapeImg.SetPixel(x, y, Color.Yellow);
-                        else if (shape == 3)
-                            shapeImg.SetPixel(x, y, Color.Blue);
-                        else
+                        else if (sc.rect)
                             shapeImg.SetPixel(x, y, Color.Purple);
+                        else
+                            shapeImg.SetPixel(x, y, Color.Blue);
                     }                        
                 }
             }
-            int length = bd.biggestBlob.Count;
 
+            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
             using (Graphics g = Graphics.FromImage(orgImg))
             {
-                g.DrawImage(shapeImg, 0, 0);
+                g.DrawImage(shapeImg, rect);
             }
         }
 
         public void displayImage() //displaying the image using the OPENCV stuff
         {
-            Console.WriteLine("orgImg: " + orgImg.Width + " " + orgImg.Height);
-            Console.WriteLine("shapeImg: " + shapeImg.Width + " " + shapeImg.Height);
             imgMatrix = new Image<Bgr, Byte>(orgImg);
-            CvInvoke.Imshow("case!", imgMatrix);
+            CvInvoke.Imshow("shape", imgMatrix);
+            CvInvoke.WaitKey();
         }
     }
 }

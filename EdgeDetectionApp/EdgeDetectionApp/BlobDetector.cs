@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Emgu.CV;
-using Emgu.CV.Structure;
 using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
-using AForge.Math.Geometry;
 
 namespace EdgeDetectionApp
 {
@@ -20,6 +13,7 @@ namespace EdgeDetectionApp
         Bitmap img;
         Color black = Color.Black;
         List<List<System.Drawing.Point>> blobs;
+
         public List<System.Drawing.Point> biggestBlob;
         public int BBwidth, BBheight;
 
@@ -28,7 +22,7 @@ namespace EdgeDetectionApp
             this.img = img;
         }
 
-        public bool compareColors(Color col1, Color col2) //comares two colours, returns true if they are the same, returns false if they are not
+        private bool compareColors(Color col1, Color col2) //comares two colours, returns true if they are the same, returns false if they are not
         {
             if (col1.ToArgb() == col2.ToArgb())
                 return true;
@@ -86,7 +80,7 @@ namespace EdgeDetectionApp
             return shapeImg;
         }
 
-        public List<System.Drawing.Point> maxBlob(List<List<System.Drawing.Point>> list) //searches the list and makes every bigger blob than the previous one the biggest blob
+        private List<System.Drawing.Point> maxBlob(List<List<System.Drawing.Point>> list) //searches the list and makes every bigger blob than the previous one the biggest blob
         {
             List<System.Drawing.Point> biggestBlob = new List<System.Drawing.Point>();
             foreach (List<System.Drawing.Point> blob in list)
@@ -98,62 +92,63 @@ namespace EdgeDetectionApp
             }
             return biggestBlob;
         }
-        public int SmallestX(List<System.Drawing.Point> blob)
+
+        private int MinX()
         {
-            int smallest_x = img.Width;
-            foreach (System.Drawing.Point p in blob)
+            int minX = img.Width;
+            foreach (System.Drawing.Point p in biggestBlob)
             {
-                if (p.X < smallest_x)
+                if (p.X < minX)
                 {
-                    smallest_x = p.X;
+                    minX = p.X;
                 }
             }
-            return smallest_x;
-        }
-        public int SmallestY(List<System.Drawing.Point> blob)
-        {
-            int smallest_y = img.Height;
-            foreach (System.Drawing.Point p in blob)
-            {
-                if (p.Y < smallest_y)
-                {
-                    smallest_y = p.Y;
-                }
-            }
-            return smallest_y;
+            return minX;
         }
 
-        public int BiggestX(List<System.Drawing.Point> blob)
+        public int MinY()
         {
-            int biggest_x = 0;
-            foreach (System.Drawing.Point p in blob)
+            int minY = img.Height;
+            foreach (System.Drawing.Point p in biggestBlob)
             {
-                if (p.X > biggest_x)
+                if (p.Y < minY)
                 {
-                    biggest_x = p.X;
+                    minY = p.Y;
                 }
             }
-            return biggest_x;
+            return minY;
         }
 
-        public int BiggestY(List<System.Drawing.Point> blob)
+        private int MaxX()
         {
-            int biggest_y = 0;
-            foreach (System.Drawing.Point p in blob)
+            int maxX = 0;
+            foreach (System.Drawing.Point p in biggestBlob)
             {
-                if (p.Y > biggest_y)
+                if (p.X > maxX)
                 {
-                    biggest_y = p.Y;
+                    maxX = p.X;
                 }
             }
-            return biggest_y;
+            return maxX;
+        }
+
+        private int MaxY()
+        {
+            int maxY = 0;
+            foreach (System.Drawing.Point p in biggestBlob)
+            {
+                if (p.Y > maxY)
+                {
+                    maxY = p.Y;
+                }
+            }
+            return maxY;
         }
 
         public void BBsize()
         {
-            BBwidth = BiggestX(biggestBlob) - SmallestX(biggestBlob);
-            BBheight = BiggestY(biggestBlob) - SmallestY(biggestBlob);
+            BBwidth = MaxX() - MinX();
+            BBheight = MaxY() - MinY();
         }
-
     }
 }
