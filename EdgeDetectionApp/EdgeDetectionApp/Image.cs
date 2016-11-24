@@ -13,102 +13,78 @@ namespace EdgeDetectionApp
     {
         Image<Bgr,Byte> imgMatrix;
         Bitmap orgImg;
-        Bitmap convertedImg;
-        Bitmap croppedImg;
+        Bitmap preprocessedImg;
         Bitmap shapeImg;
         BlobDetector bd;
         Shapecheck sc;
 
         public Image(string img_path)
         {
-            orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\" + img_path + ".jpg"); //original image
-        }
-
-        private Bitmap convert(Bitmap img)
-        {
-            convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb); //converts the image to bitmap in specific pixelformat - draws pixels on a blank bitmap
-            using (Graphics g = Graphics.FromImage(convertedImg))
-            {
-                g.DrawImage(img, 0, 0);
-            }
-            return convertedImg;
-        }
-
-        private void scaling(double scalar)
-        {
-            int height = (int)(scalar * orgImg.Height);
-            int width = (int)(scalar * orgImg.Width);
-            ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-            orgImg = filter.Apply(orgImg);
-        }
-
-        private void crop() //crops the edge parts either on the right or left side (wide picture) or upper and downer side (tall picture)
-        {
-            if (orgImg.Width < orgImg.Height)
-            {
-                Crop filter = new Crop(new Rectangle(0, orgImg.Height / 6, orgImg.Width, orgImg.Height / 2));
-                orgImg = filter.Apply(orgImg);
-            }
-            else
-            {
-                Crop filter = new Crop(new Rectangle(orgImg.Width / 6, 0, orgImg.Width / 2, orgImg.Height));
-                orgImg = filter.Apply(orgImg);
-            }
+            orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\Kids\\" + img_path + ".jpg"); //original image
         }
 
         private void grayscale() //convers the image to grayscale, just a filter again
         {
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
-            croppedImg = filter.Apply(orgImg);
+            preprocessedImg = filter.Apply(orgImg);
         }
 
         private void noiseReduce(int ksize) //filter, ksize - kernel for the gaussian filter,  
         {
             GaussianBlur filter = new GaussianBlur(1, ksize);
-            croppedImg = filter.Apply(croppedImg);
-        }
-
-        private void edgeDetection() //sobel edge detection filter
-        {
-            SobelEdgeDetector filter = new SobelEdgeDetector();
-            filter.ApplyInPlace(croppedImg);
+            preprocessedImg = filter.Apply(preprocessedImg);
         }
 
         private void thresholding() //finds threshold on its own
         {
             OtsuThreshold filter = new OtsuThreshold();
-            croppedImg = filter.Apply(croppedImg);
+            preprocessedImg = filter.Apply(preprocessedImg);
         }
 
-        private void skeletonize() // makes the edges of the picture only 1 pixel wide
+        private void edgeDetection() //sobel edge detection filter
         {
-            SimpleSkeletonization filter = new SimpleSkeletonization();
-            filter.ApplyInPlace(croppedImg);
+            SobelEdgeDetector filter = new SobelEdgeDetector();
+            filter.ApplyInPlace(preprocessedImg);
         }
 
-        public void preprocess(double scalar, int ksize) //it just calls all the functions for preprocesing
+        private void dilation() //finds threshold on its own
         {
-            scaling(scalar);
-            //crop();
+            Dilatation filter = new Dilatation();
+            preprocessedImg = filter.Apply(preprocessedImg);
+        }
+
+        public void preprocess(int ksize) //it just calls all the functions for preprocesing
+        {
             grayscale();
             noiseReduce(ksize);
             thresholding();
             edgeDetection();
-            thresholding();
-            skeletonize();
+            dilation();
+            dilation();
         }
 
         public void blobDetect()
         {
-            bd = new BlobDetector(croppedImg);
+            bd = new BlobDetector(preprocessedImg);
             shapeImg = bd.blobDetection();
+            thresholding();
         }
 
         public void shapeDetect()
         {
-            bd.BBsize();
+            bd.boxSize();
             sc = new Shapecheck(shapeImg);
-            sc.whichShape(bd.BBheight, bd.BBwidth);
+            sc.whichShape(bd.boxHeight, bd.boxWidth, bd.minX, bd.minY, bd.maxX, bd.maxY);
+        }
+
+        private Bitmap convert(Bitmap img)
+        {
+            Bitmap convertedImg = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb); //converts the image to bitmap in specific pixelformat - draws pixels on a blank bitmap
+            using (Graphics g = Graphics.FromImage(convertedImg))
+            {
+                g.DrawImage(img, 0, 0);
+            }
+            return convertedImg;
         }
 
         public void draw() //drawing colours depending on shapes
@@ -141,10 +117,19 @@ namespace EdgeDetectionApp
             }
         }
 
-        public void displayImage() //displaying the image using the OPENCV stuff
+        private void scaling(double scalar)
         {
+            int height = (int)(scalar * orgImg.Height);
+            int width = (int)(scalar * orgImg.Width);
+            ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
+            orgImg = filter.Apply(orgImg);
+        }
+
+        public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
+        {
+            scaling(scalar);
             imgMatrix = new Image<Bgr, Byte>(orgImg);
-            CvInvoke.Imshow("shape", imgMatrix);
+            CvInvoke.Imshow(caption, imgMatrix);
             CvInvoke.WaitKey();
         }
     }

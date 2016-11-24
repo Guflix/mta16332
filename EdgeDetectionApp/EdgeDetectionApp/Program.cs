@@ -4,12 +4,12 @@
     {
         static void Main(string[] args)
         {
-            Image test = new Image("triangle1");
-            test.preprocess(0.3, 11);
-            test.blobDetect();
+            Image test = new Image("2");
+            test.preprocess(11);
+            test.blobDetect();            
             test.shapeDetect();
             test.draw();
-            test.displayImage();
+            test.displayImage(0.3, "shape");
         }
     }
 }
