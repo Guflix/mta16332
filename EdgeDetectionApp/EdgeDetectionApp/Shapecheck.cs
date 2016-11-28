@@ -28,7 +28,7 @@ namespace EdgeDetectionApp
                 for (int j = 0; j < img.Height; j++)
                 {
                     Color color = img.GetPixel(i, j);
-                    if (color.ToArgb() == Color.White.ToArgb())
+                    if (color.ToArgb() == white.ToArgb())
                         pixels++;
                 }
             }
@@ -38,14 +38,14 @@ namespace EdgeDetectionApp
         private void floodFill(int x, int y) //bucket tool, fills it with paint, AForge, stops when it hits the edges
         {
             PointedColorFloodFill filter = new PointedColorFloodFill();
-            filter.FillColor = Color.White;
+            filter.FillColor = white;
             filter.StartingPoint = new IntPoint(x, y);
             filter.ApplyInPlace(img);
         }
 
         private void circularity(double area, double perimeter) //checks if it is cicular or not (function on the internet)
         {
-            double c = (4 * Math.PI * area) / Math.Pow(perimeter, 2);
+            double c = perimeter / (2 * Math.Sqrt(Math.PI * area));
             if (c > 0.95)
                 circle = true;
         }
@@ -55,7 +55,8 @@ namespace EdgeDetectionApp
             double boxArea = (double)boxHeight * (double)boxWidth; //bbArea - bounding box area, now doesn't work
             if (area / boxArea < 0.55)
                 triangle = true;
-            
+
+
             double boxRatio;
             if (boxWidth > boxHeight)
                     boxRatio = (double)boxHeight / (double)boxWidth;
@@ -70,9 +71,9 @@ namespace EdgeDetectionApp
 
         public void whichShape(int boxHeight, int boxWidth, int minX, int minY, int maxX, int maxY)
         {
-            perimeter = countPixels();
+            perimeter = 1.10850404074*countPixels();
             floodFill(minX + boxWidth / 2, minY + boxHeight / 2);
-            area = countPixels();
+            area = 0.9952575298*countPixels();
             circularity(area, perimeter);
             if(circle)
                 triangleOrSquare(boxHeight, boxWidth);

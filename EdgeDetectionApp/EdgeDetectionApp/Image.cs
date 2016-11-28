@@ -73,6 +73,8 @@ namespace EdgeDetectionApp
         public void shapeDetect()
         {
             bd.boxSize();
+            Console.WriteLine(bd.boxWidth);
+            Console.WriteLine(bd.boxHeight);
             sc = new Shapecheck(shapeImg);
             sc.whichShape(bd.boxHeight, bd.boxWidth, bd.minX, bd.minY, bd.maxX, bd.maxY);
         }
@@ -122,7 +124,7 @@ namespace EdgeDetectionApp
             int height = (int)(scalar * orgImg.Height);
             int width = (int)(scalar * orgImg.Width);
             ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-            orgImg = filter.Apply(orgImg);
+            orgImg = filter.Apply(shapeImg);
         }
 
         public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff

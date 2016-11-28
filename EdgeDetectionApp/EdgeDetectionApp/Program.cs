@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Image test = new Image("2");
+            Image test = new Image("8");
             test.preprocess(11);
             test.blobDetect();            
             test.shapeDetect();

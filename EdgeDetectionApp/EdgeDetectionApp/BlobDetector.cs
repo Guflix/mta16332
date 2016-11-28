@@ -65,7 +65,7 @@ namespace EdgeDetectionApp
                 }
             }
             sort();
-            biggestBlob = blobs[0];
+            biggestBlob = blobs[1];
 
             List<IntPoint> hull = convexHull(biggestBlob);
             Bitmap image = new Bitmap(img.Width, img.Height, PixelFormat.Format24bppRgb); //new bitmap, same size as the picture
