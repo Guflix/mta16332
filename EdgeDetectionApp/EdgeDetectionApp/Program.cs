@@ -19,7 +19,7 @@ namespace EdgeDetectionApp
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormEdge());
+            Application.Run(new FormIntro());
         }
     }
 }
