@@ -9,16 +9,16 @@ using AForge.Imaging.Filters;
 
 namespace EdgeDetectionApp
 {
-    class Image
+    class Image2
     {
         Image<Bgr,Byte> imgMatrix;
-        Bitmap orgImg;
-        Bitmap preprocessedImg;
+        public Bitmap orgImg;
+        public Bitmap preprocessedImg;
         Bitmap shapeImg;
         BlobDetector bd;
         Shapecheck sc;
 
-        public Image(string img_path)
+        public Image2(string img_path)
         {
             orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\Kids\\" + img_path + ".jpg"); //original image
         }
@@ -73,8 +73,6 @@ namespace EdgeDetectionApp
         public void shapeDetect()
         {
             bd.boxSize();
-            Console.WriteLine(bd.boxWidth);
-            Console.WriteLine(bd.boxHeight);
             sc = new Shapecheck(shapeImg);
             sc.whichShape(bd.boxHeight, bd.boxWidth, bd.minX, bd.minY, bd.maxX, bd.maxY);
         }
