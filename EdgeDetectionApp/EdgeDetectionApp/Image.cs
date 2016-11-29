@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using AForge;
@@ -14,17 +21,25 @@ namespace EdgeDetectionApp
         Image<Bgr,Byte> imgMatrix;
         public Bitmap orgImg;
         public Bitmap preprocessedImg;
+        string whatever;
+        //public string PicName = "8";
         Bitmap shapeImg;
         BlobDetector bd;
         Shapecheck sc;
 
-        public Image2(string img_path)
+        public Image2(string whatever)
         {
-            orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\Kids\\" + img_path + ".jpg"); //original image
+            this.whatever = whatever;
+            
+            //orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\Kids\\" + PicName + ".jpg"); //original image
         }
-
-        private void grayscale() //convers the image to grayscale, just a filter again
+        
+        public void grayscale() //convers the image to grayscale, just a filter again
         {
+            
+            //orgImg = (Bitmap) System.Drawing.Image.FromFile(o.FileName);
+            
+            orgImg = AForge.Imaging.Image.FromFile(whatever);
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
             preprocessedImg = filter.Apply(orgImg);
         }

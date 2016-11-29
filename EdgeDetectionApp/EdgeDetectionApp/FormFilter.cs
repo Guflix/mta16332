@@ -12,10 +12,10 @@ namespace EdgeDetectionApp
 {
     public partial class FormFilter : Form
     {
-        public FormFilter()
+        public FormFilter(string whatever)
         {
             InitializeComponent();
-            Image2 Myimage = new Image2("8");
+            Image2 Myimage = new Image2(whatever);
             Myimage.preprocess(11);
             Myimage.blobDetect();
             Myimage.shapeDetect();

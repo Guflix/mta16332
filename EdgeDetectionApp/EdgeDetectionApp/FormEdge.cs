@@ -12,11 +12,10 @@ namespace EdgeDetectionApp
 {
     public partial class FormEdge : Form
     {
+        ProgramMain p = new ProgramMain();
         public void ImageChanger()
         {
-            Image2 Myimage = new Image2("8");
-           
-            pictureBox1.Image = Myimage.orgImg;
+          
         }
 
         public FormEdge()
@@ -52,18 +51,18 @@ namespace EdgeDetectionApp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Image2 Myimage = new Image2("8");
-            pictureBox1.Image = Myimage.orgImg;
+            //Image2 Myimage = new Image2();
+            //pictureBox1.Image = Myimage.orgImg;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Image2 Myimage = new Image2("8");
-            Myimage.preprocess(11);
-            Myimage.blobDetect();
-            Myimage.shapeDetect();
-            Myimage.draw();
-            pictureBox1.Image = Myimage.orgImg;
+        //    Image2 Myimage = new Image2();
+        //    Myimage.preprocess(11);
+        //    Myimage.blobDetect();
+        //    Myimage.shapeDetect();
+        //    Myimage.draw();
+        //    pictureBox1.Image = Myimage.orgImg;
         }
     }
 }

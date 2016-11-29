@@ -8,9 +8,11 @@ namespace EdgeDetectionApp
 {
     class ProgramMain
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            //Image2 test = new Image2("8");
+
+            //Image2 test = new Image2();
             //test.preprocess(11);
             //test.blobDetect();            
             //test.shapeDetect();
