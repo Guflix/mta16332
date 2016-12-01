@@ -38,9 +38,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(263, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(35, 31);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(511, 512);
+            this.pictureBox1.Size = new System.Drawing.Size(410, 418);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -48,7 +48,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(337, 530);
+            this.button1.Location = new System.Drawing.Point(73, 509);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 53);
             this.button1.TabIndex = 1;
@@ -58,7 +58,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(528, 530);
+            this.button2.Location = new System.Drawing.Point(264, 509);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 53);
             this.button2.TabIndex = 2;
@@ -68,7 +68,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(337, 607);
+            this.button3.Location = new System.Drawing.Point(73, 586);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 53);
             this.button3.TabIndex = 3;
@@ -78,7 +78,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(528, 607);
+            this.button4.Location = new System.Drawing.Point(264, 586);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(139, 53);
             this.button4.TabIndex = 4;
@@ -90,14 +90,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1020, 677);
+            this.ClientSize = new System.Drawing.Size(482, 677);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
             this.Name = "FormEdge";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormEdge";
+            this.Load += new System.EventHandler(this.FormEdge_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

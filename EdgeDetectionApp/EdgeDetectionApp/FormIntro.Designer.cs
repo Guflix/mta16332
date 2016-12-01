@@ -40,7 +40,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(430, 321);
+            this.button2.Location = new System.Drawing.Point(165, 316);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 53);
             this.button2.TabIndex = 2;
@@ -53,7 +53,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1020, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(482, 24);
             this.menuStrip1.TabIndex = 7;
             // 
             // fileToolStripMenuItem
@@ -82,7 +82,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(430, 227);
+            this.button1.Location = new System.Drawing.Point(165, 222);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 53);
             this.button1.TabIndex = 5;
@@ -92,7 +92,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(430, 420);
+            this.button3.Location = new System.Drawing.Point(165, 415);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 53);
             this.button3.TabIndex = 6;
@@ -103,7 +103,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1020, 677);
+            this.BackColor = System.Drawing.Color.White;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(482, 677);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
@@ -111,6 +113,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormIntro";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormIntro";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -36,7 +36,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(304, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(35, 31);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(410, 418);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -45,7 +45,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(438, 469);
+            this.button1.Location = new System.Drawing.Point(169, 519);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 53);
             this.button1.TabIndex = 1;
@@ -55,7 +55,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(438, 557);
+            this.button2.Location = new System.Drawing.Point(169, 607);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 53);
             this.button2.TabIndex = 2;
@@ -67,11 +67,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1020, 677);
+            this.ClientSize = new System.Drawing.Size(482, 677);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
             this.Name = "FormCheckPic";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormCheckPic";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

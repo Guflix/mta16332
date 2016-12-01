@@ -63,19 +63,9 @@ namespace EdgeDetectionApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap chair {
+        internal static System.Drawing.Bitmap Fil_24_02_2016_13_22_22 {
             get {
-                object obj = ResourceManager.GetObject("chair", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap circle {
-            get {
-                object obj = ResourceManager.GetObject("circle", resourceCulture);
+                object obj = ResourceManager.GetObject("Fil 24-02-2016 13.22.22", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

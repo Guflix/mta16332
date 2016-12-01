@@ -74,5 +74,10 @@ namespace EdgeDetectionApp
         //    Myimage.draw();
         //    pictureBox1.Image = Myimage.orgImg;
         }
+
+        private void FormEdge_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
