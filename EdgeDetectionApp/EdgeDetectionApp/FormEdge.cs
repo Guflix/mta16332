@@ -12,7 +12,7 @@ namespace EdgeDetectionApp
 {
     public partial class FormEdge : Form
     {
-        int i = 0;
+        int i;
         string filepath;
         Image2 Myimage;
         Bitmap img;
@@ -21,16 +21,10 @@ namespace EdgeDetectionApp
 
  
 
-        public FormEdge(string filepath)
+        public FormEdge(Bitmap image)
         {
-            this.filepath = filepath;
             InitializeComponent();
-            Myimage = new Image2(filepath);
-            Myimage.preprocess(11);
-            img = new Bitmap(Myimage.orgImg);
-            Myimage.blobDetect();
-            Myimage.shapeDetect(0);
-            pictureBox1.Image = Myimage.draw(Myimage.orgImg);
+            pictureBox1.Image = image;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

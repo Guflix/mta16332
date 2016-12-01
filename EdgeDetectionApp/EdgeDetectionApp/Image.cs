@@ -18,7 +18,7 @@ namespace EdgeDetectionApp
 {
     public class Image2
     {
-        Image<Bgr, Byte> imgMatrix;
+        //Image<Bgr, Byte> imgMatrix;
         public string filepath;
         
         public Bitmap orgImg;
@@ -27,6 +27,7 @@ namespace EdgeDetectionApp
 
         public BlobDetector bd;
         Shapecheck sc;
+        Color shapeColor = Color.Beige;
 
         public Image2(string filepath)
         {
@@ -98,7 +99,7 @@ namespace EdgeDetectionApp
             return convertedImg;
         }
 
-        public Bitmap draw(Bitmap img) //drawing colours depending on shapes
+        public Bitmap drawShape(Bitmap img)
         {
             shapeImg = convert(shapeImg);
             for (int x = 0; x < shapeImg.Width; x++)
@@ -108,7 +109,28 @@ namespace EdgeDetectionApp
                     Color color = shapeImg.GetPixel(x, y);
                     if (color.ToArgb() == Color.Black.ToArgb())
                         shapeImg.SetPixel(x, y, Color.Transparent);
-                    else if (color.ToArgb() != Color.Black.ToArgb()){
+                    else
+                        shapeImg.SetPixel(x, y, shapeColor);
+                }
+            }
+
+            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
+            using (Graphics g = Graphics.FromImage(img))
+            {
+                g.DrawImage(shapeImg, rect);
+            }
+            return img;
+        }
+
+        public Bitmap drawColor(Bitmap img) //drawing colours depending on shapes
+        {
+            for (int x = bd.minX; x < bd.maxX; x++)
+            {
+                for (int y = bd.minY; y < bd.maxY; y++)
+                {
+                    Color color = shapeImg.GetPixel(x, y);
+                    if (color.ToArgb() == shapeColor.ToArgb())
+                    {
                         if(sc.circle)
                             shapeImg.SetPixel(x, y, Color.Red);
                         else if (sc.triangle)
@@ -117,7 +139,7 @@ namespace EdgeDetectionApp
                             shapeImg.SetPixel(x, y, Color.Purple);
                         else
                             shapeImg.SetPixel(x, y, Color.Blue);
-                    }                        
+                    }                           
                 }
             }
 

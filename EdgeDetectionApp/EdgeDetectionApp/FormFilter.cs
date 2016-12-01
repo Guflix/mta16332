@@ -13,7 +13,7 @@ namespace EdgeDetectionApp
     public partial class FormFilter : Form
     {
 
-        int i = 0;
+        public int i = 0;
         string filepath;
         Image2 Myimage;
         Bitmap img;
@@ -29,7 +29,8 @@ namespace EdgeDetectionApp
             img = new Bitmap(Myimage.orgImg);
             Myimage.blobDetect();
             Myimage.shapeDetect(0);
-            pictureBox1.Image = Myimage.draw(Myimage.orgImg);
+            Myimage.orgImg = Myimage.drawShape(Myimage.orgImg);
+            pictureBox1.Image = Myimage.orgImg;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -53,13 +54,17 @@ namespace EdgeDetectionApp
             {
                 img2 = new Bitmap(img);
                 Myimage.shapeDetect(i);
-                pictureBox1.Image = Myimage.draw(img2);
+                pictureBox1.Image = Myimage.drawShape(img2);
             }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            FormEdge r = new FormEdge(filepath);
+            FormEdge r;
+            if (i == 0)
+                r = new FormEdge(Myimage.drawColor(Myimage.orgImg));
+            else
+                r = new FormEdge(Myimage.drawColor(img2));
             r.Show();
             Hide();
         }
