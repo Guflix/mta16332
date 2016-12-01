@@ -129,20 +129,20 @@ namespace EdgeDetectionApp
             return img;
         }
 
-        private void scaling(double scalar)
-        {
-            int height = (int)(scalar * orgImg.Height);
-            int width = (int)(scalar * orgImg.Width);
-            ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-            orgImg = filter.Apply(orgImg);
-        }
+        //private void scaling(double scalar)
+        //{
+        //    int height = (int)(scalar * orgImg.Height);
+        //    int width = (int)(scalar * orgImg.Width);
+        //    ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
+        //    orgImg = filter.Apply(orgImg);
+        //}
 
-        public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
-        {
-            scaling(scalar);
-            imgMatrix = new Image<Bgr, Byte>(orgImg);
-            CvInvoke.Imshow(caption, imgMatrix);
-            CvInvoke.WaitKey();
-        }
+        //public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
+        //{
+        //    scaling(scalar);
+        //    imgMatrix = new Image<Bgr, Byte>(orgImg);
+        //    CvInvoke.Imshow(caption, imgMatrix);
+        //    CvInvoke.WaitKey();
+        //}
     }
 }

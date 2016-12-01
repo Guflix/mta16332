@@ -43,7 +43,7 @@ namespace EdgeDetectionApp
             filter.ApplyInPlace(img);
         }
 
-        private void circularity(double area, double perimeter) //checks if it is cicular or not (function on the internet)
+        private void circularity() //checks if it is cicular or not (function on the internet)
         {
             double c = perimeter / (2 * Math.Sqrt(Math.PI * area));
             if (c < 1.092)
@@ -65,7 +65,7 @@ namespace EdgeDetectionApp
                 else
                     boxRatio = (double)boxWidth / (double)boxHeight;
 
-                if (boxRatio > 0.893 && !triangle)
+                if (boxRatio > 0.893)
                     square = true;
                 else
                     rect = true;
@@ -77,7 +77,7 @@ namespace EdgeDetectionApp
             perimeter = 1.10850404074*countPixels();
             floodFill(minX + boxWidth / 2, minY + boxHeight / 2);
             area = 0.9952575298*countPixels();
-            circularity(area, perimeter);
+            circularity();
             if(!circle)
                 triangleOrSquare(boxHeight, boxWidth);
         }
