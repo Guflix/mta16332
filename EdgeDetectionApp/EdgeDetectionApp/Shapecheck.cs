@@ -53,7 +53,7 @@ namespace EdgeDetectionApp
         private void triangleOrSquare(int boxHeight, int boxWidth)
         {
             double boxArea = (double)boxHeight * (double)boxWidth; //bbArea - bounding box area, now doesn't work
-            if (area / boxArea < 0.703)
+            if (area / boxArea < 0.684)
                 triangle = true;
 
 
