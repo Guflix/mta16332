@@ -48,7 +48,6 @@ namespace EdgeDetectionApp
             double c = perimeter / (2 * Math.Sqrt(Math.PI * area));
             if (c < 1.092)
                 circle = true;
-            Console.WriteLine(c);
         }
 
         private void triangleOrSquare(int boxHeight, int boxWidth)
@@ -59,15 +58,18 @@ namespace EdgeDetectionApp
 
 
             double boxRatio;
-            if (boxWidth > boxHeight)
+            if (!triangle)
+            {
+                if (boxWidth > boxHeight)
                     boxRatio = (double)boxHeight / (double)boxWidth;
-            else
-                boxRatio = (double)boxWidth / (double)boxHeight;
+                else
+                    boxRatio = (double)boxWidth / (double)boxHeight;
 
-            if (boxRatio > 0.95 && triangle == false)
-                square = true;
-            else
-                rect = true;
+                if (boxRatio > 0.893 && !triangle)
+                    square = true;
+                else
+                    rect = true;
+            }
         }
 
         public void whichShape(int boxHeight, int boxWidth, int minX, int minY, int maxX, int maxY)
@@ -76,7 +78,7 @@ namespace EdgeDetectionApp
             floodFill(minX + boxWidth / 2, minY + boxHeight / 2);
             area = 0.9952575298*countPixels();
             circularity(area, perimeter);
-            if(circle)
+            if(!circle)
                 triangleOrSquare(boxHeight, boxWidth);
         }
     }

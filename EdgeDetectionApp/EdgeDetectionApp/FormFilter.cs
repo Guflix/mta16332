@@ -54,7 +54,6 @@ namespace EdgeDetectionApp
                 Myimage.shapeDetect(i);
                 pictureBox1.Image = Myimage.draw(img2);
             }
-            Console.WriteLine(i);
         }
     }
 }
