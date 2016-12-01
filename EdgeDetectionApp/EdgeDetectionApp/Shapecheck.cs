@@ -7,7 +7,7 @@ using AForge.Imaging.Filters;
 
 namespace EdgeDetectionApp
 {
-    class Shapecheck
+    public class Shapecheck
     {
         Bitmap img;
         double perimeter, area; //obvod

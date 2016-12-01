@@ -27,7 +27,7 @@ namespace EdgeDetectionApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormFilter q = new FormFilter(f.filk);
+            FormFilter q = new FormFilter(Myimage);
             q.Show();
             Hide();
 
@@ -39,11 +39,10 @@ namespace EdgeDetectionApp
             o.InitialDirectory = "C:\\Github\\P3\\Kids";
             o.Filter = "Images only. |*.jpg; *.jpeg; *.png; *.bmp;";
 
-            
             DialogResult dr = o.ShowDialog();
-            f.filk = o.FileName.Replace("\\", "\\\\");
+            filepath = o.FileName.Replace("\\", "\\\\");
 
-            pictureBox1.Image = Image.FromFile(f.filk);
+            pictureBox1.Image = Image.FromFile(filepath);
         }
     }
 }

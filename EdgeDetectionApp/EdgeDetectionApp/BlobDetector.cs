@@ -9,7 +9,7 @@ using AForge.Math.Geometry;
 
 namespace EdgeDetectionApp
 {
-    class BlobDetector
+    public class BlobDetector
     {
         Bitmap img;
         Bitmap img2;

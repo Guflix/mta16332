@@ -15,21 +15,21 @@ namespace EdgeDetectionApp
 
         int i = 0;
         string filepath;
-        Image2 Myimage;
+        Image2 image;
         Bitmap img;
         private Button button7;
         Bitmap img2;
 
-        public FormFilter(string filepath)
+        public FormFilter(Image2 image)
         {
-            this.filepath = filepath;
+            //this.filepath = filepath;
+            this.image = image;
             InitializeComponent();
-            Myimage = new Image2(filepath);
-            Myimage.preprocess(11);
-            img = new Bitmap(Myimage.orgImg);
-            Myimage.blobDetect();
-            Myimage.shapeDetect(0);
-            pictureBox1.Image = Myimage.draw(Myimage.orgImg);
+            image.preprocess(11);
+            img = new Bitmap(image.orgImg);
+            image.blobDetect();
+            image.shapeDetect(0);
+            pictureBox1.Image = image.draw(image.orgImg);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -45,15 +45,15 @@ namespace EdgeDetectionApp
         private void button2_Click(object sender, EventArgs e)
         {
             i++;
-            if (i == 5 || i == Myimage.bd.blobs.Count)
+            if (i == 5 || i == image.bd.blobs.Count)
             {
                 Console.WriteLine("Nope");
             }
             else
             {
                 img2 = new Bitmap(img);
-                Myimage.shapeDetect(i);
-                pictureBox1.Image = Myimage.draw(img2);
+                image.shapeDetect(i);
+                pictureBox1.Image = image.draw(img2);
             }
         }
 

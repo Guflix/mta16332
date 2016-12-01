@@ -16,7 +16,7 @@ using AForge.Imaging.Filters;
 
 namespace EdgeDetectionApp
 {
-    class Image2
+    public class Image2
     {
         Image<Bgr, Byte> imgMatrix;
         string filepath;
