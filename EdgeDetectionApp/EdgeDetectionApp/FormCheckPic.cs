@@ -27,7 +27,7 @@ namespace EdgeDetectionApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormFilter q = new FormFilter(Myimage);
+            FormFilter q = new FormFilter(filepath);
             q.Show();
             Hide();
 

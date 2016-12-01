@@ -19,7 +19,7 @@ namespace EdgeDetectionApp
     public class Image2
     {
         Image<Bgr, Byte> imgMatrix;
-        string filepath;
+        public string filepath;
         
         public Bitmap orgImg;
         public Bitmap preprocessedImg;
