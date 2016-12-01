@@ -17,6 +17,7 @@ namespace EdgeDetectionApp
         string filepath;
         Image2 Myimage;
         Bitmap img;
+        private Button button7;
         Bitmap img2;
 
         public FormFilter(string filepath)
@@ -54,6 +55,23 @@ namespace EdgeDetectionApp
                 Myimage.shapeDetect(i);
                 pictureBox1.Image = Myimage.draw(img2);
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            FormEdge r = new FormEdge(filepath);
+            r.Show();
+            Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,11 +31,11 @@ namespace EdgeDetectionApp
         public Image2(string filepath)
         {
             this.filepath = filepath;
+            orgImg = AForge.Imaging.Image.FromFile(filepath);
         }
         
         public void grayscale()
         {
-            orgImg = AForge.Imaging.Image.FromFile(filepath);
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
             preprocessedImg = filter.Apply(orgImg);
         }

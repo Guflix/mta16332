@@ -143,6 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlobDetector.cs" />
+    <Compile Include="FormCheckPic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCheckPic.Designer.cs">
+      <DependentUpon>FormCheckPic.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormEdge.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,11 +158,15 @@
     <Compile Include="FormFilter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormFilter.Designer.cs" />
+    <Compile Include="FormFilter.Designer.cs">
+      <DependentUpon>FormFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormIntro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormIntro.Designer.cs" />
+    <Compile Include="FormIntro.Designer.cs">
+      <DependentUpon>FormIntro.cs</DependentUpon>
+    </Compile>
     <Compile Include="Image.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,8 +190,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormCheckPic.resx">
+      <DependentUpon>FormCheckPic.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormEdge.resx">
       <DependentUpon>FormEdge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFilter.resx">
+      <DependentUpon>FormFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormIntro.resx">
+      <DependentUpon>FormIntro.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
