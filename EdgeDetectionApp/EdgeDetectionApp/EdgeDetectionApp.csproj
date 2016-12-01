@@ -130,7 +130,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -139,6 +143,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlobDetector.cs" />
+    <Compile Include="FormEdge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEdge.Designer.cs">
+      <DependentUpon>FormEdge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFilter.Designer.cs" />
+    <Compile Include="FormIntro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormIntro.Designer.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,6 +178,11 @@
     <Content Include="opencv_ffmpeg310_64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormEdge.resx">
+      <DependentUpon>FormEdge.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

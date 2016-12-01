@@ -18,28 +18,24 @@ namespace EdgeDetectionApp
 {
     class Image2
     {
-        Image<Bgr,Byte> imgMatrix;
+        Image<Bgr, Byte> imgMatrix;
+        string filepath;
+        
         public Bitmap orgImg;
         public Bitmap preprocessedImg;
-        string whatever;
-        //public string PicName = "8";
         Bitmap shapeImg;
-        BlobDetector bd;
+
+        public BlobDetector bd;
         Shapecheck sc;
 
-        public Image2(string whatever)
+        public Image2(string filepath)
         {
-            this.whatever = whatever;
-            
-            //orgImg = AForge.Imaging.Image.FromFile("C:\\Github\\P3\\Kids\\" + PicName + ".jpg"); //original image
+            this.filepath = filepath;
         }
         
-        public void grayscale() //convers the image to grayscale, just a filter again
+        public void grayscale()
         {
-            
-            //orgImg = (Bitmap) System.Drawing.Image.FromFile(o.FileName);
-            
-            orgImg = AForge.Imaging.Image.FromFile(whatever);
+            orgImg = AForge.Imaging.Image.FromFile(filepath);
             Grayscale filter = new Grayscale(0.299, 0.587, 0.114);
             preprocessedImg = filter.Apply(orgImg);
         }
@@ -81,13 +77,13 @@ namespace EdgeDetectionApp
         public void blobDetect()
         {
             bd = new BlobDetector(preprocessedImg);
-            shapeImg = bd.blobDetection();
-            thresholding();
+            bd.blobDetection();
         }
 
-        public void shapeDetect()
+        public void shapeDetect(int blobNo)
         {
-            bd.boxSize();
+            shapeImg = bd.drawConvexHull(blobNo);
+            bd.boundingBoxSize();
             sc = new Shapecheck(shapeImg);
             sc.whichShape(bd.boxHeight, bd.boxWidth, bd.minX, bd.minY, bd.maxX, bd.maxY);
         }
@@ -102,7 +98,7 @@ namespace EdgeDetectionApp
             return convertedImg;
         }
 
-        public void draw() //drawing colours depending on shapes
+        public Bitmap draw(Bitmap img) //drawing colours depending on shapes
         {
             shapeImg = convert(shapeImg);
             for (int x = 0; x < shapeImg.Width; x++)
@@ -125,11 +121,12 @@ namespace EdgeDetectionApp
                 }
             }
 
-            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
-            using (Graphics g = Graphics.FromImage(orgImg))
+            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
+            using (Graphics g = Graphics.FromImage(img))
             {
                 g.DrawImage(shapeImg, rect);
             }
+            return img;
         }
 
         private void scaling(double scalar)
@@ -137,7 +134,7 @@ namespace EdgeDetectionApp
             int height = (int)(scalar * orgImg.Height);
             int width = (int)(scalar * orgImg.Width);
             ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-            orgImg = filter.Apply(shapeImg);
+            orgImg = filter.Apply(orgImg);
         }
 
         public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff

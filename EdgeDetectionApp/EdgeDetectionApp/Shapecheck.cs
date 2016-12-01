@@ -46,14 +46,15 @@ namespace EdgeDetectionApp
         private void circularity(double area, double perimeter) //checks if it is cicular or not (function on the internet)
         {
             double c = perimeter / (2 * Math.Sqrt(Math.PI * area));
-            if (c > 0.95)
+            if (c < 1.092)
                 circle = true;
+            Console.WriteLine(c);
         }
 
         private void triangleOrSquare(int boxHeight, int boxWidth)
         {
             double boxArea = (double)boxHeight * (double)boxWidth; //bbArea - bounding box area, now doesn't work
-            if (area / boxArea < 0.55)
+            if (area / boxArea < 0.703)
                 triangle = true;
 
 

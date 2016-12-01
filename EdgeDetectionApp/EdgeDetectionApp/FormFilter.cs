@@ -12,15 +12,23 @@ namespace EdgeDetectionApp
 {
     public partial class FormFilter : Form
     {
-        public FormFilter(string whatever)
+
+        int i = 0;
+        string filepath;
+        Image2 Myimage;
+        Bitmap img;
+        Bitmap img2;
+
+        public FormFilter(string filepath)
         {
+            this.filepath = filepath;
             InitializeComponent();
-            Image2 Myimage = new Image2(whatever);
+            Myimage = new Image2(filepath);
             Myimage.preprocess(11);
+            img = new Bitmap(Myimage.orgImg);
             Myimage.blobDetect();
-            Myimage.shapeDetect();
-            Myimage.draw();
-            pictureBox1.Image = Myimage.orgImg;
+            Myimage.shapeDetect(0);
+            pictureBox1.Image = Myimage.draw(Myimage.orgImg);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -31,6 +39,22 @@ namespace EdgeDetectionApp
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            i++;
+            if (i == 5 || i == Myimage.bd.blobs.Count)
+            {
+                Console.WriteLine("Nope");
+            }
+            else
+            {
+                img2 = new Bitmap(img);
+                Myimage.shapeDetect(i);
+                pictureBox1.Image = Myimage.draw(img2);
+            }
+            Console.WriteLine(i);
         }
     }
 }
