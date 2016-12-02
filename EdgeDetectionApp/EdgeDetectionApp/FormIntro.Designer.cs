@@ -111,6 +111,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormIntro";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

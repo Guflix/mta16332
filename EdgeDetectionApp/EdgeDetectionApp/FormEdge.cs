@@ -34,13 +34,14 @@ namespace EdgeDetectionApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
+            PopYes p = new PopYes();
+            p.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
-            
+            PopNo o = new PopNo();
+            o.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -55,18 +56,12 @@ namespace EdgeDetectionApp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //Image2 Myimage = new Image2();
-            //pictureBox1.Image = Myimage.orgImg;
+            
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-        //    Image2 Myimage = new Image2();
-        //    Myimage.preprocess(11);
-        //    Myimage.blobDetect();
-        //    Myimage.shapeDetect();
-        //    Myimage.draw();
-        //    pictureBox1.Image = Myimage.orgImg;
+      
         }
 
         private void FormEdge_Load(object sender, EventArgs e)
