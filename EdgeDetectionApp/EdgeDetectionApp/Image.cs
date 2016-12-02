@@ -26,7 +26,7 @@ namespace EdgeDetectionApp
         Bitmap shapeImg;
 
         public BlobDetector bd;
-        Shapecheck sc;
+        public Shapecheck sc;
         Color shapeColor = Color.Beige;
 
         public Image2(string filepath)

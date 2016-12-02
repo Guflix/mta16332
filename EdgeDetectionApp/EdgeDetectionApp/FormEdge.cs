@@ -21,8 +21,9 @@ namespace EdgeDetectionApp
 
  
 
-        public FormEdge(Bitmap image)
+        public FormEdge(Bitmap image, Image2 Myimage)
         {
+            this.Myimage = Myimage;
             InitializeComponent();
             pictureBox1.Image = image;
         }
@@ -34,24 +35,58 @@ namespace EdgeDetectionApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PopYes p = new PopYes();
-            p.Show();
+            if (Myimage.sc.circle)
+            {
+                PopYes p = new PopYes();
+                p.Show();
+            }
+            else
+            {
+                PopNo o = new PopNo();
+                o.Show();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PopNo o = new PopNo();
-            o.Show();
+            if (Myimage.sc.triangle)
+            {
+                PopYes p = new PopYes();
+                p.Show();
+            }
+            else
+            {
+                PopNo o = new PopNo();
+                o.Show();
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            if (Myimage.sc.square)
+            {
+                PopYes p = new PopYes();
+                p.Show();
+            }
+            else
+            {
+                PopNo o = new PopNo();
+                o.Show();
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+            if (Myimage.sc.rect)
+            {
+                PopYes p = new PopYes();
+                p.Show();
+            }
+            else
+            {
+                PopNo o = new PopNo();
+                o.Show();
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)

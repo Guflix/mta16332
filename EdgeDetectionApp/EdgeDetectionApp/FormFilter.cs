@@ -62,9 +62,9 @@ namespace EdgeDetectionApp
         {
             FormEdge r;
             if (i == 0)
-                r = new FormEdge(Myimage.drawColor(Myimage.orgImg));
+                r = new FormEdge(Myimage.drawColor(Myimage.orgImg), Myimage);
             else
-                r = new FormEdge(Myimage.drawColor(img2));
+                r = new FormEdge(Myimage.drawColor(img2), Myimage);
             r.Show();
             Hide();
         }
