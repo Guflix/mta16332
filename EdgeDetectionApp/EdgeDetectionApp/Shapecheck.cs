@@ -43,43 +43,34 @@ namespace EdgeDetectionApp
             filter.ApplyInPlace(img);
         }
 
-        private void circularity() //checks if it is cicular or not (function on the internet)
+        public void whichShape(int boxHeight, int boxWidth, int minX, int minY, int maxX, int maxY)
         {
+            perimeter = 1.10850404074 * countPixels();
+            floodFill(minX + boxWidth / 2, minY + boxHeight / 2);
+            area = 0.9952575298 * countPixels();
+
             double c = perimeter / (2 * Math.Sqrt(Math.PI * area));
             if (c < 1.092)
                 circle = true;
-        }
-
-        private void triangleOrSquare(int boxHeight, int boxWidth)
-        {
-            double boxArea = (double)boxHeight * (double)boxWidth; //bbArea - bounding box area, now doesn't work
-            if (area / boxArea < 0.684)
-                triangle = true;
-
-
-            double boxRatio;
-            if (!triangle)
+            else
             {
-                if (boxWidth > boxHeight)
-                    boxRatio = (double)boxHeight / (double)boxWidth;
+                double boxArea = (double)boxHeight * (double)boxWidth; //bbArea - bounding box area, now doesn't work
+                if (area / boxArea < 0.684)
+                    triangle = true;
                 else
-                    boxRatio = (double)boxWidth / (double)boxHeight;
+                {
+                    double boxRatio;
+                    if (boxWidth > boxHeight)
+                        boxRatio = (double)boxHeight / (double)boxWidth;
+                    else
+                        boxRatio = (double)boxWidth / (double)boxHeight;
 
-                if (boxRatio > 0.893)
-                    square = true;
-                else
-                    rect = true;
+                    if (boxRatio > 0.893)
+                        square = true;
+                    else
+                        rect = true;
+                }
             }
-        }
-
-        public void whichShape(int boxHeight, int boxWidth, int minX, int minY, int maxX, int maxY)
-        {
-            perimeter = 1.10850404074*countPixels();
-            floodFill(minX + boxWidth / 2, minY + boxHeight / 2);
-            area = 0.9952575298*countPixels();
-            circularity();
-            if(!circle)
-                triangleOrSquare(boxHeight, boxWidth);
         }
     }
 }
