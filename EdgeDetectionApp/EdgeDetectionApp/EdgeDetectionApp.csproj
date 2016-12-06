@@ -211,6 +211,12 @@
     <Content Include="opencv_ffmpeg310_64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Button4.png" />
+    <None Include="Resources\Button3.png" />
+    <None Include="Resources\Button2.png" />
+    <None Include="Resources\Button1.png" />
+    <None Include="Resources\Button1.jpg" />
+    <None Include="Resources\test.png" />
     <None Include="Resources\Yes.png" />
     <None Include="Resources\Fil 24-02-2016 13.22.22.jpeg" />
   </ItemGroup>

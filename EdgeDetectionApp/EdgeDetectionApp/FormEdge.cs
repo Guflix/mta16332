@@ -15,7 +15,7 @@ namespace EdgeDetectionApp
         int i;
         string filepath;
         Image2 Myimage;
-        Bitmap img;
+        Bitmap image;
         private Button button7;
         Bitmap img2;
 
@@ -23,6 +23,7 @@ namespace EdgeDetectionApp
 
         public FormEdge(Bitmap image, Image2 Myimage)
         {
+            this.image = image;
             this.Myimage = Myimage;
             InitializeComponent();
             pictureBox1.Image = image;
@@ -37,7 +38,7 @@ namespace EdgeDetectionApp
         {
             if (Myimage.sc.circle)
             {
-                PopYes p = new PopYes();
+                PopYes p = new PopYes(image, Myimage);
                 p.Show();
             }
             else
@@ -51,7 +52,7 @@ namespace EdgeDetectionApp
         {
             if (Myimage.sc.triangle)
             {
-                PopYes p = new PopYes();
+                PopYes p = new PopYes(image, Myimage);
                 p.Show();
             }
             else
@@ -65,7 +66,7 @@ namespace EdgeDetectionApp
         {
             if (Myimage.sc.square)
             {
-                PopYes p = new PopYes();
+                PopYes p = new PopYes(image, Myimage);
                 p.Show();
             }
             else
@@ -79,7 +80,7 @@ namespace EdgeDetectionApp
         {
             if (Myimage.sc.rect)
             {
-                PopYes p = new PopYes();
+                PopYes p = new PopYes(image, Myimage);
                 p.Show();
             }
             else

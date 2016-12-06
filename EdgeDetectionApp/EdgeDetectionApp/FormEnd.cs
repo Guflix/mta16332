@@ -12,9 +12,13 @@ namespace EdgeDetectionApp
 {
     public partial class FormEnd : Form
     {
+        Bitmap image;
+
         public FormEnd(Bitmap image)
         {
+            this.image = image;
             InitializeComponent();
+            pictureBox1.Image = image;
 
         }
 

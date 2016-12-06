@@ -132,13 +132,13 @@ namespace EdgeDetectionApp
                     if (color.ToArgb() == shapeColor.ToArgb())
                     {
                         if(sc.circle)
-                            shapeImg.SetPixel(x, y, Color.Red);
+                            shapeImg.SetPixel(x, y, Color.IndianRed);
                         else if (sc.triangle)
                             shapeImg.SetPixel(x, y, Color.Yellow);
                         else if (sc.rect)
-                            shapeImg.SetPixel(x, y, Color.Purple);
+                            shapeImg.SetPixel(x, y, Color.MediumOrchid);
                         else
-                            shapeImg.SetPixel(x, y, Color.Blue);
+                            shapeImg.SetPixel(x, y, Color.RoyalBlue);
                     }                           
                 }
             }
