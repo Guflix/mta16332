@@ -25,11 +25,11 @@ namespace EdgeDetectionApp
             this.filepath = filepath;
             InitializeComponent();
             Myimage = new Image2(filepath);
-            Myimage.preprocess(11);
+            Myimage.preprocess();
             img = new Bitmap(Myimage.orgImg);
             Myimage.blobDetect();
             Myimage.shapeDetect(0);
-            Myimage.orgImg = Myimage.drawShape(Myimage.orgImg);
+            Myimage.orgImg = Myimage.drawShape();
             pictureBox1.Image = Myimage.orgImg;
         }
 
@@ -54,7 +54,7 @@ namespace EdgeDetectionApp
             {
                 img2 = new Bitmap(img);
                 Myimage.shapeDetect(i);
-                pictureBox1.Image = Myimage.drawShape(img2);
+                pictureBox1.Image = Myimage.drawShape();
             }
         }
 

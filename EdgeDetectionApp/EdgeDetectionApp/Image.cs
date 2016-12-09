@@ -18,7 +18,7 @@ namespace EdgeDetectionApp
 {
     public class Image2
     {
-        //Image<Bgr, Byte> imgMatrix;
+        Image<Bgr, Byte> imgMatrix;
         public string filepath;
         
         public Bitmap orgImg;
@@ -41,9 +41,9 @@ namespace EdgeDetectionApp
             preprocessedImg = filter.Apply(orgImg);
         }
 
-        private void noiseReduce(int ksize) //filter, ksize - kernel for the gaussian filter,  
+        private void noiseReduce() //filter, ksize - kernel for the gaussian filter,  
         {
-            GaussianBlur filter = new GaussianBlur(1, ksize);
+            Median filter = new Median();
             preprocessedImg = filter.Apply(preprocessedImg);
         }
 
@@ -59,20 +59,21 @@ namespace EdgeDetectionApp
             filter.ApplyInPlace(preprocessedImg);
         }
 
-        private void dilation() //finds threshold on its own
-        {
-            Dilatation filter = new Dilatation();
-            preprocessedImg = filter.Apply(preprocessedImg);
-        }
+        //private void dilation() //finds threshold on its own
+        //{
+        //    Dilatation filter = new Dilatation();
+        //    preprocessedImg = filter.Apply(preprocessedImg);
+        //}
 
-        public void preprocess(int ksize) //it just calls all the functions for preprocesing
+        public void preprocess() //it just calls all the functions for preprocesing
         {
             grayscale();
-            noiseReduce(ksize);
+            noiseReduce();
             thresholding();
             edgeDetection();
-            dilation();
-            dilation();
+            //dilation();
+            //dilation();
+            //dilation();
         }
 
         public void blobDetect()
@@ -99,7 +100,7 @@ namespace EdgeDetectionApp
             return convertedImg;
         }
 
-        public Bitmap drawShape(Bitmap img)
+        public Bitmap drawShape()
         {
             shapeImg = convert(shapeImg);
             for (int x = 0; x < shapeImg.Width; x++)
@@ -114,15 +115,15 @@ namespace EdgeDetectionApp
                 }
             }
 
-            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
-            using (Graphics g = Graphics.FromImage(img))
+            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
+            using (Graphics g = Graphics.FromImage(orgImg))
             {
                 g.DrawImage(shapeImg, rect);
             }
-            return img;
+            return orgImg;
         }
 
-        public Bitmap drawColor(Bitmap img) //drawing colours depending on shapes
+        public Bitmap drawColor() //drawing colours depending on shapes
         {
             for (int x = bd.minX; x < bd.maxX; x++)
             {
@@ -143,28 +144,28 @@ namespace EdgeDetectionApp
                 }
             }
 
-            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
-            using (Graphics g = Graphics.FromImage(img))
+            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
+            using (Graphics g = Graphics.FromImage(orgImg))
             {
                 g.DrawImage(shapeImg, rect);
             }
-            return img;
+            return orgImg;
         }
 
-        //private void scaling(double scalar)
-        //{
-        //    int height = (int)(scalar * orgImg.Height);
-        //    int width = (int)(scalar * orgImg.Width);
-        //    ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-        //    orgImg = filter.Apply(orgImg);
-        //}
+        private void scaling(double scalar)
+        {
+            int height = (int)(scalar * orgImg.Height);
+            int width = (int)(scalar * orgImg.Width);
+            ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
+            orgImg = filter.Apply(orgImg);
+        }
 
-        //public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
-        //{
-        //    scaling(scalar);
-        //    imgMatrix = new Image<Bgr, Byte>(orgImg);
-        //    CvInvoke.Imshow(caption, imgMatrix);
-        //    CvInvoke.WaitKey();
-        //}
+        public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
+        {
+            scaling(scalar);
+            imgMatrix = new Image<Bgr, Byte>(orgImg);
+            CvInvoke.Imshow(caption, imgMatrix);
+            CvInvoke.WaitKey();
+        }
     }
 }
