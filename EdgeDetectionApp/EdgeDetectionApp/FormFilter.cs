@@ -29,18 +29,8 @@ namespace EdgeDetectionApp
             img = new Bitmap(Myimage.orgImg);
             Myimage.blobDetect();
             Myimage.shapeDetect(0);
-            Myimage.orgImg = Myimage.drawShape();
+            Myimage.orgImg = Myimage.drawShape(Myimage.orgImg);
             pictureBox1.Image = Myimage.orgImg;
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -54,11 +44,11 @@ namespace EdgeDetectionApp
             {
                 img2 = new Bitmap(img);
                 Myimage.shapeDetect(i);
-                pictureBox1.Image = Myimage.drawShape();
+                pictureBox1.Image = Myimage.drawShape(img2);
             }
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             FormEdge r;
             if (i == 0)
@@ -67,16 +57,6 @@ namespace EdgeDetectionApp
                 r = new FormEdge(img2, Myimage);
             r.Show();
             Hide();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

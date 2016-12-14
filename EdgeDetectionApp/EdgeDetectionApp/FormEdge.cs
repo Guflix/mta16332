@@ -12,26 +12,15 @@ namespace EdgeDetectionApp
 {
     public partial class FormEdge : Form
     {
-        int i;
-        string filepath;
         Image2 Myimage;
         Bitmap image;
-        private Button button7;
-        Bitmap img2;
-
- 
-
+        
         public FormEdge(Bitmap image, Image2 Myimage)
         {
             this.image = image;
             this.Myimage = Myimage;
             InitializeComponent();
             pictureBox1.Image = image;
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -88,21 +77,6 @@ namespace EdgeDetectionApp
                 PopNo o = new PopNo();
                 o.Show();
             }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-      
-        }
-
-        private void FormEdge_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

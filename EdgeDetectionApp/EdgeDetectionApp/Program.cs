@@ -11,17 +11,19 @@ namespace EdgeDetectionApp
         [STAThread]
         static void Main(string[] args)
         {
-            Image2 test = new Image2("C:\\Github\\P3\\Kids\\7.jpg");
+            //Used during testing to show the processed image without the interface
+            /*Image2 test = new Image2("C:\\Github\\P3\\box.jpg");
             test.preprocess();
             test.blobDetect();
             test.shapeDetect(0);
-            test.drawShape();
-            test.drawColor();
-            test.displayImage(0.3, "shape");
+            test.drawShape(test.orgImg);
+            test.drawColor(test.orgImg);
+            test.displayImage(0.3, "shape");*/
 
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormIntro());
+            //Runs the interface
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new FormIntro());
         }
     }
 }

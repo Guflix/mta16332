@@ -24,7 +24,7 @@ namespace EdgeDetectionApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormEnd f = new FormEnd(Myimage.drawColor());
+            FormEnd f = new FormEnd(Myimage.drawColor(image));
             f.Show();
             Hide();
         }

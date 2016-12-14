@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Emgu.CV;
-using Emgu.CV.Structure;
+//using Emgu.CV;
+//using Emgu.CV.Structure;
 using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
@@ -18,16 +11,16 @@ namespace EdgeDetectionApp
 {
     public class Image2
     {
-        Image<Bgr, Byte> imgMatrix;
+        //Image<Bgr, Byte> imgMatrix;
         public string filepath;
         
-        public Bitmap orgImg;
-        public Bitmap preprocessedImg;
-        Bitmap shapeImg;
+        public Bitmap orgImg; // the original image of the picture, which is later drawn onto
+        public Bitmap preprocessedImg; // the image after it has been preprocessed
+        Bitmap shapeImg; // the image after BLOB detection and later floodfilling it
 
         public BlobDetector bd;
         public Shapecheck sc;
-        Color shapeColor = Color.Beige;
+        Color shapeColor = Color.Beige; // the color drawn onto the shape before it has been guessed
 
         public Image2(string filepath)
         {
@@ -41,39 +34,30 @@ namespace EdgeDetectionApp
             preprocessedImg = filter.Apply(orgImg);
         }
 
-        private void noiseReduce() //filter, ksize - kernel for the gaussian filter,  
+        private void noiseReduce()
         {
             Median filter = new Median();
             preprocessedImg = filter.Apply(preprocessedImg);
         }
 
-        private void thresholding() //finds threshold on its own
+        private void thresholding()
         {
             OtsuThreshold filter = new OtsuThreshold();
             preprocessedImg = filter.Apply(preprocessedImg);
         }
 
-        private void edgeDetection() //sobel edge detection filter
+        private void edgeDetection()
         {
             SobelEdgeDetector filter = new SobelEdgeDetector();
             filter.ApplyInPlace(preprocessedImg);
         }
 
-        //private void dilation() //finds threshold on its own
-        //{
-        //    Dilatation filter = new Dilatation();
-        //    preprocessedImg = filter.Apply(preprocessedImg);
-        //}
-
-        public void preprocess() //it just calls all the functions for preprocesing
+        public void preprocess()
         {
             grayscale();
             noiseReduce();
             thresholding();
             edgeDetection();
-            //dilation();
-            //dilation();
-            //dilation();
         }
 
         public void blobDetect()
@@ -100,7 +84,7 @@ namespace EdgeDetectionApp
             return convertedImg;
         }
 
-        public Bitmap drawShape()
+        public Bitmap drawShape(Bitmap img)
         {
             shapeImg = convert(shapeImg);
             for (int x = 0; x < shapeImg.Width; x++)
@@ -115,15 +99,15 @@ namespace EdgeDetectionApp
                 }
             }
 
-            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
-            using (Graphics g = Graphics.FromImage(orgImg))
+            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
+            using (Graphics g = Graphics.FromImage(img))
             {
                 g.DrawImage(shapeImg, rect);
             }
-            return orgImg;
+            return img;
         }
 
-        public Bitmap drawColor() //drawing colours depending on shapes
+        public Bitmap drawColor(Bitmap img)
         {
             for (int x = bd.minX; x < bd.maxX; x++)
             {
@@ -144,20 +128,21 @@ namespace EdgeDetectionApp
                 }
             }
 
-            Rectangle rect = new Rectangle(0, 0, orgImg.Width, orgImg.Height);
-            using (Graphics g = Graphics.FromImage(orgImg))
+            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
+            using (Graphics g = Graphics.FromImage(img))
             {
                 g.DrawImage(shapeImg, rect);
             }
-            return orgImg;
+            return img;
         }
 
-        private void scaling(double scalar)
+        //Scaling and displaying the image, when not running the interface
+        /*private void scaling(double scalar)
         {
             int height = (int)(scalar * orgImg.Height);
             int width = (int)(scalar * orgImg.Width);
             ResizeBilinear filter = new ResizeBilinear(width, height); //AForge filter to scale the image
-            orgImg = filter.Apply(orgImg);
+            orgImg = filter.Apply(preprocessedImg);
         }
 
         public void displayImage(double scalar, string caption) //displaying the image using the OPENCV stuff
@@ -166,6 +151,6 @@ namespace EdgeDetectionApp
             imgMatrix = new Image<Bgr, Byte>(orgImg);
             CvInvoke.Imshow(caption, imgMatrix);
             CvInvoke.WaitKey();
-        }
+        }*/
     }
 }

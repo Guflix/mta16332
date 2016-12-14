@@ -27,31 +27,31 @@ namespace EdgeDetectionApp
 
         public void blobDetection()
         {
-            blobs = new List<List<IntPoint>>();  //list of blobs which contains the list of coordinates for blobs (pixels)
-            bool[,] burned = new bool[img.Width, img.Height]; // twodimensional array of booleans
-            for (int x = 0; x < img.Width; x++) // goes through every pixel,
+            blobs = new List<List<IntPoint>>();
+            bool[,] burned = new bool[img.Width, img.Height];
+            for (int x = 0; x < img.Width; x++)
             {
                 for (int y = 0; y < img.Height; y++)
                 {
                     Color color = img.GetPixel(x, y);
-                    if (color.ToArgb() == white.ToArgb() && !burned[x, y]) // compares the colour of every pixel, if it is not black and we haven't checked it already
+                    if (color.ToArgb() == white.ToArgb() && !burned[x, y])
                     {
-                        Queue<IntPoint> q = new Queue<IntPoint>(); //then it makes a new queue for every pixel and adds it there
+                        Queue<IntPoint> q = new Queue<IntPoint>();
                         q.Enqueue(new IntPoint(x, y));
 
-                        List<IntPoint> blob = new List<IntPoint>(); //initiates new blob
-                        while (q.Count > 0) //while the queue is not empty, the dequeue it and take a point p out
+                        List<IntPoint> blob = new List<IntPoint>();
+                        while (q.Count > 0)
                         {
-                            IntPoint p = q.Dequeue(); //duqueue means the 1st pixel in the queue
-                            if (p.X >= 0 && p.X < img.Width && p.Y >= 0 && p.Y < img.Height) //it checks that it is within the boundaries of the image
+                            IntPoint p = q.Dequeue();
+                            if (p.X >= 0 && p.X < img.Width && p.Y >= 0 && p.Y < img.Height)
                             {
-                                Color col = img.GetPixel(p.X, p.Y); // new colour at the position of the point p
-                                if (!burned[p.X, p.Y] && col.ToArgb() == white.ToArgb()) // checks if point p has not been checked and it's not black
+                                Color col = img.GetPixel(p.X, p.Y);
+                                if (!burned[p.X, p.Y] && col.ToArgb() == white.ToArgb())
                                 {
-                                    burned[p.X, p.Y] = true; // here you check/burn the pixel
+                                    burned[p.X, p.Y] = true;
                                     blob.Add(p);
 
-                                    q.Enqueue(new IntPoint(p.X + 1, p.Y)); //you connect all the pixels around it to the queue
+                                    q.Enqueue(new IntPoint(p.X + 1, p.Y));
                                     q.Enqueue(new IntPoint(p.X, p.Y + 1));
                                     q.Enqueue(new IntPoint(p.X - 1, p.Y));
                                     q.Enqueue(new IntPoint(p.X, p.Y - 1));
@@ -93,7 +93,7 @@ namespace EdgeDetectionApp
             IConvexHullAlgorithm hullFinder = new GrahamConvexHull();
             List<IntPoint> hull = hullFinder.FindHull(shapeBlob);
 
-            Bitmap blobImage = new Bitmap(img2.Width, img2.Height, PixelFormat.Format24bppRgb); //new bitmap, same size as the picture
+            Bitmap blobImage = new Bitmap(img2.Width, img2.Height, PixelFormat.Format24bppRgb);
             BitmapData shapeImg = blobImage.LockBits(new Rectangle(0, 0, img2.Width, img2.Height), ImageLockMode.ReadWrite, blobImage.PixelFormat);
             Drawing.Polygon(shapeImg, hull, Color.White);
             blobImage.UnlockBits(shapeImg);

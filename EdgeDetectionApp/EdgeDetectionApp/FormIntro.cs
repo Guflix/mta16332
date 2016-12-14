@@ -28,7 +28,7 @@ namespace EdgeDetectionApp
         private void button1_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog o = new OpenFileDialog();
-            o.InitialDirectory = "C:\\Github\\P3\\Kids";
+            o.InitialDirectory = "C:\\Github\\P3\\Kids\\Testpics";
             o.Filter = "Images only. |*.jpg; *.jpeg; *.png; *.bmp;";
 
             DialogResult dr = o.ShowDialog();
